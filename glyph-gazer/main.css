@@ -29,6 +29,7 @@ input {
   position: relative;
   text-align: center;
 }
+
 .glyph-gazer::after {
   bottom: 0;
   content: attr(data-font);
