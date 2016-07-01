@@ -66,7 +66,7 @@ function printGlyphGlazers(arr) {
     glyphGazer += fontName
     glyphGazer += '\'; font-weight:'
     glyphGazer += fontWeight
-    glyphGazer += '" tabindex="0">'
+    glyphGazer += '" tabindex="1">'
     glyphGazer += gazeText
     glyphGazer += '</div>'
     $('#gaze-container').append(glyphGazer)
