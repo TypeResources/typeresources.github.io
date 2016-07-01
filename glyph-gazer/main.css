@@ -1,0 +1,43 @@
+.glyph-gazer {
+  font-size: calc(10vw + 10vh);
+  margin-bottom: .2em;
+  outline: none;
+  position: relative;
+  text-align: center;
+}
+.glyph-gazer::after {
+  bottom: 0;
+  content: attr(data-font);
+  font-size: 0.8rem;
+  font-weight: normal;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  opacity: .6;
+  position: absolute;
+  top: 0;
+  -webkit-transform: translateY(90%);
+          transform: translateY(90%);
+  white-space: nowrap;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: #222;
+  padding: 5vh 5vw;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+input {
+  font-size: 0.8rem;
+  padding: 1rem;
+  width: 100%;
+  outline: none;
+  border: 0;
+  background-color: rgba(243, 243, 241, 0.98);
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
