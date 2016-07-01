@@ -12,9 +12,16 @@
 
 <body>
   <input id="fonts-list" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="Open Sans, Lato, Roboto, Source Sans Pro, PT Sans">
+
   <div id="font-loading"></div>
   <div id="gaze-container" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
-  
+
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+    <symbol viewBox="0 0 1 4" id="lines" preserveAspectRatio="none">
+      <path d="M0 0h1M0 1h1M0 2h1M0 3h1M0 4h1" vector-effect="non-scaling-stroke" stroke-width="1"/>
+    </symbol>
+  </svg>
+
   <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
   <script src="main.js"></script>
