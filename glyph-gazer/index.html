@@ -19,7 +19,7 @@
     .glyph-gazer::after {
       bottom: 0;
       content: attr(data-font);
-      font-size: 10px;
+      font-size: 0.8rem;
       opacity: .6;
       position: absolute;
       top: 0;
@@ -28,9 +28,23 @@
       white-space: nowrap;
     }
     
+    * {
+      box-sizing: border-box;
+    }
+    
     body {
-      padding: 5vh 5vw;
       color: #222;
+      font-size: 0.8rem;
+      padding: 5vh 5vw;
+    }
+    
+    input {
+      padding: 1rem;
+      width: 100%;
+      outline: none;
+      border: 0;
+      background-color: #f3f3f1;
+      border-radius: .2rem;
     }
   </style>
 </head>
