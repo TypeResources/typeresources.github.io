@@ -1,0 +1,115 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Type Resources</title>
+  <meta name="description" content="">
+  <meta name="author" content="Type Resources">
+
+  <style>
+    .glyph-gazer {
+      font-size: calc(10vw + 10vh);
+      margin-bottom: .2em;
+      outline: none;
+      position: relative;
+      text-align: center;
+    }
+    .glyph-gazer::after {
+      bottom: 0;
+      content: attr(data-font);
+      font-size: 10px;
+      opacity: .6;
+      position: absolute;
+      top: 0;
+      -webkit-transform: translateY(90%);
+              transform: translateY(90%);
+      white-space: nowrap;
+    }
+    
+    body {
+      padding: 5vh 5vw;
+      color: #222;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="font-loading"></div>
+  <div id="gaze-container"></div>
+  <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+  <script>
+    var urlQuery = location.search.replace('?q=','')
+var gazeText = 'asa'
+
+if ( urlQuery.length ) {
+  gazeText = urlQuery
+}
+
+var googleFontsUrl = "https://fonts.googleapis.com/css?family="
+
+var fonts = [
+	{
+		name: "Open Sans",
+	},
+	{
+		name: "Lato",
+	},
+	{
+		name: "Roboto",
+	},
+	{
+		name: "Source Sans Pro",
+	},
+	{
+		name: "PT Sans",
+	}
+]
+
+
+// Get Google Fonts URI compatible string from array of font objects
+function getGoogleFontsURI(listOfFonts){
+
+	var familyParam = ""
+
+	// Loop though fonts and add to familyParam string
+	listOfFonts.forEach(function(font){
+		familyParam += font.name
+		familyParam += '|'
+	})
+
+	// Remove last bar
+	familyParam = familyParam.slice(0, -1)
+
+	// Replace Spaces with plus.
+	familyParam = familyParam.split(' ').join('+')
+	return googleFontsUrl + familyParam
+}
+
+// Print out divs for all fonts
+function printGlyphGlazers(listOfFonts) {
+	listOfFonts.forEach(function(font){
+    $('#gaze-container').append('<div data-font="' + font.name + '" class="glyph-gazer" contenteditable="true" style="font-family:\'' + font.name + '\'" tabindex="0">' + gazeText + '</div>')
+  })
+}
+
+// Load google fonts
+$('#font-loading').html('<style> @import \'' + getGoogleFontsURI(fonts) + '\';</style>')
+
+
+// Update on edit
+$('#gaze-container').keyup( function(e){
+  var activeGaze = $(e.target)
+  console.log(e)
+  //$('.glyph-gazer').text(e.target.innerText)
+  activeGaze.siblings().html(activeGaze.text())
+})
+
+
+
+
+printGlyphGlazers(fonts)
+  </script>
+</body>
+</html>
