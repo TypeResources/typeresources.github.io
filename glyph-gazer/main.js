@@ -101,7 +101,8 @@ function loadGoogleFonts(arr) {
 // Update on edit
 $('#gaze-container').keyup( function(e){
   var activeGaze = $(e.target)
-  activeGaze.siblings().html(activeGaze.text())
+  gazeText = activeGaze.text()
+  activeGaze.siblings().html(gazeText)
 })
 
 $fontsList.keyup( function() {
