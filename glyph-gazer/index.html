@@ -40,11 +40,14 @@
   <div id="gaze-container"></div>
   <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
   <script>
-    var urlQuery = location.search.replace('?q=','')
-var gazeText = 'asa'
+  
+var urlQuery = location.search.replace('?q=','')
+var urlQueryDecoded = decodeURI(urlQuery)
+var gazeText = 'a···sa'
 
-if ( urlQuery.length ) {
-  gazeText = urlQuery
+// Override default if url query
+if ( urlQueryDecoded.length ) {
+  gazeText = urlQueryDecoded
 }
 
 var googleFontsUrl = "https://fonts.googleapis.com/css?family="
@@ -110,6 +113,7 @@ $('#gaze-container').keyup( function(e){
 
 
 printGlyphGlazers(fonts)
+
   </script>
 </body>
 </html>
