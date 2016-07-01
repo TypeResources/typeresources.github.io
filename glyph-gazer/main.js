@@ -1,7 +1,8 @@
 var googleFontsUrl = "https://fonts.googleapis.com/css?family="
-var urlQuery = location.search.replace('?q=', '')
-var urlQueryDecoded = decodeURI(urlQuery)
-var gazeState = {text: "abcde", fonts: "Open Sans, Roboto"}
+var gazeState = {
+  text: "abcde",
+  fonts: "Open Sans, Roboto"
+}
 var localStorageGazeState = localStorage.getItem('gazeState')
 var $gazeContainer = $('#gaze-container')
 var $gazeInputFonts = $('#gaze-fonts')
@@ -14,8 +15,8 @@ function getUrlGazeState() {
   var pl = /\+/g // Regex for replacing addition symbol with a space
   var search = /([^&=]+)=?([^&]*)/g
   var decode = function(s) {
-      return decodeURIComponent(s.replace(pl, " "))
-    }
+    return decodeURIComponent(s.replace(pl, " "))
+  }
   var query = window.location.search.substring(1)
 
   var urlParams = {};
@@ -106,7 +107,7 @@ function getGoogleFontsURI(arr) {
 // Load google fonts
 function loadGoogleFonts(arr) {
   $('#font-loading').html('<style>@import \'' + getGoogleFontsURI(arr) +
-      '\';</style>')
+    '\';</style>')
 }
 
 
