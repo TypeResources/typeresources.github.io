@@ -1,14 +1,29 @@
-var googleFontsUrl = "https://fonts.googleapis.com/css?family="
+///////////////////
+//// VARIABLES ////
+///////////////////
+
+// State
 var gazeState = {
   text: "abcde",
   fonts: "Open Sans, Roboto"
 }
 var localStorageGazeState = localStorage.getItem('gazeState')
+var urlGazeState;
+
+// DOM Elements
 var $gazeContainer = $('#gaze-container')
 var $gazeInputFonts = $('#gaze-fonts')
 var $fontsList = $('#fonts-list')
+
+// Other
+var googleFontsUrl = "https://fonts.googleapis.com/css?family="
 var svg = '<svg><use xlink:href="#lines"/></svg>'
 
+
+
+///////////////////
+//// FUNCTIONS ////
+///////////////////
 
 function getUrlGazeState() {
   var match
@@ -64,21 +79,22 @@ function printGlyphGlazers(arr) {
       fontName = trimmedFont
     }
 
+    // Create elements
     $gazeWrapper = $('<div></div>').addClass('gaze')
     $gazeText = $('<div></div>').addClass('gaze__text')
     $gazeMetrics = $('<div></div>').addClass('gaze__metrics').html(svg)
 
-    // Make text editable
+    // Add text and make editable
+    $gazeText.html(gazeState.text)
     $gazeText.attr('contenteditable', 'true');
 
-    // Add styles to text
-    $gazeText.html(gazeState.text)
+    // Addand font styles
     $gazeWrapper.css({
       'font-family': fontName,
       'font-weight': fontWeight
     })
 
-
+    // Append to DOM
     $gazeWrapper.append($gazeText, $gazeMetrics)
     $gazeContainer.append($gazeWrapper)
   })
@@ -112,14 +128,17 @@ function loadGoogleFonts(arr) {
 
 
 
-// init
+//////////////
+//// INIT ////
+//////////////
+
 // Extends default gazeState with any url parameters
 gazeState = $.extend({}, gazeState, getLocalStorageGazeState())
 gazeState = $.extend({}, gazeState, getUrlGazeState())
 setLocalStorageState()
 
 
-// Update on edit
+// Update state on gaze text edit
 $gazeContainer.keyup(function(e) {
   var activeGaze = $(e.target)
   var gazeText = activeGaze.text()
@@ -128,6 +147,7 @@ $gazeContainer.keyup(function(e) {
   setLocalStorageState()
 })
 
+// Update state on font list edit
 $gazeInputFonts.keyup(function(e) {
   gazeState.fonts = $(this).val()
   setLocalStorageState()
@@ -135,6 +155,7 @@ $gazeInputFonts.keyup(function(e) {
   printGlyphGlazers(parseCsvToArray(gazeState.fonts))
 })
 
+// Fill input with font
 $gazeInputFonts.val(gazeState.fonts)
 
 // fetchStorageFontList()
