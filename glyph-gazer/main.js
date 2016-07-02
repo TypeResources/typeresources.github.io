@@ -8,7 +8,6 @@ var gazeState = {
   fonts: "Open Sans, Roboto"
 }
 var localStorageGazeState = localStorage.getItem('gazeState')
-var urlGazeState;
 
 // DOM Elements
 var $gazeContainer = $('#gaze-container')
@@ -47,6 +46,11 @@ function getLocalStorageGazeState() {
 
 function setLocalStorageState() {
   localStorage.setItem('gazeState', JSON.stringify(gazeState))
+}
+
+function updateUrl(){
+  var newURL = getBaseUrl() + stateToUri()
+  window.history.pushState("object or string", "Title", newURL);
 }
 
 function getDomFontList() {
@@ -126,6 +130,38 @@ function loadGoogleFonts(arr) {
     '\';</style>')
 }
 
+// Get base url. Removes parameters.
+function getBaseUrl(){
+    return window.location.href.replace(/\?.*/,'');
+}
+
+// Convert object to URI string
+function stateToUri(obj){
+  // Set values to sync to URI
+  var valuesToSync = ['fonts', 'text']
+  
+  // Initialize URI string
+  uriStr = '?'
+
+  for (var i = valuesToSync.length - 1; i >= 0; i--) {
+    var key = valuesToSync[i] 
+    var value = gazeState[key]
+
+    // Remove whitespaces
+    value = value.replace(/\s+/g, '')
+
+    // Build URI
+    uriStr += key + '='
+    uriStr += value
+    uriStr += '&'
+  };
+
+  // Lazy remove last ampersand
+  uriStr = uriStr.slice(0, -1)  
+
+  return uriStr
+}
+
 
 
 //////////////
@@ -145,6 +181,7 @@ $gazeContainer.keyup(function(e) {
   activeGaze.parent().siblings().children('.gaze__text').html(gazeText)
   gazeState.text = gazeText
   setLocalStorageState()
+  updateUrl()
 })
 
 // Update state on font list edit
@@ -153,6 +190,7 @@ $gazeInputFonts.keyup(function(e) {
   setLocalStorageState()
   loadGoogleFonts(parseCsvToArray(gazeState.fonts))
   printGlyphGlazers(parseCsvToArray(gazeState.fonts))
+  updateUrl()
 })
 
 // Fill input with font
@@ -161,3 +199,4 @@ $gazeInputFonts.val(gazeState.fonts)
 // fetchStorageFontList()
 loadGoogleFonts(parseCsvToArray(gazeState.fonts))
 printGlyphGlazers(parseCsvToArray(gazeState.fonts))
+updateUrl()
