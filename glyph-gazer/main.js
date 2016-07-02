@@ -185,9 +185,13 @@ setLocalStorageState()
 
 // Update state on gaze text edit
 $gazeContainer.keyup(function(e) {
-  var activeGaze = $(e.target)
-  var gazeText = activeGaze.text()
-  activeGaze.parent().siblings().children('.gaze__text').html(gazeText)
+  var $thisGaze = $(e.target)
+  var gazeText = $thisGaze.text()
+
+  // Update all text elements except current gaze to avoid cursor jump
+  $thisGaze.parent().siblings().children('.gaze__text').html(gazeText)
+
+  // Update states
   gazeState.text = gazeText
   setLocalStorageState()
   updateUrl()
