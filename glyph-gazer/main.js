@@ -163,6 +163,14 @@ function stateToUri(obj){
 }
 
 
+// Prettify CSV with space after comma
+function prettifyCSV(csvStr){
+  return csvStr.replace(/,/g, ", "); 
+}
+
+
+
+
 
 //////////////
 //// INIT ////
@@ -194,7 +202,7 @@ $gazeInputFonts.keyup(function(e) {
 })
 
 // Fill input with font
-$gazeInputFonts.val(gazeState.fonts)
+$gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
 
 // fetchStorageFontList()
 loadGoogleFonts(parseCsvToArray(gazeState.fonts))
