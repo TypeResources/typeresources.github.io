@@ -148,7 +148,8 @@ function stateToUri(obj){
     var value = gazeState[key]
 
     // Remove whitespaces
-    value = value.replace(/\s+/g, '')
+    value = value.replace(/, /g, ",");
+    value = encodeURI(value); 
 
     // Build URI
     uriStr += key + '='
