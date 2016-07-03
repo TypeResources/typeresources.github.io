@@ -157,7 +157,7 @@ function stateToUri(obj){
 
     // Remove whitespaces
     value = value.replace(/, /g, ",");
-    value = encodeURI(value); 
+    value = encodeURIComponent(value); 
 
     // Build URI
     uriStr += key + '='
