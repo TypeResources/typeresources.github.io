@@ -9,6 +9,10 @@ $color-body: #222;
   margin: 0;
 }
 
+html {
+  font-size: 16px;
+}
+
 body {
   color: $color-body;
   font-family: $sans-serif;
@@ -33,6 +37,16 @@ input {
   margin-bottom: .2em;
   position: relative;
   text-align: center;
+
+  &::after{
+    content: attr(data-fontname);
+    font-size: $font-size;
+    font-family: $sans-serif;
+    font-weight: 400;
+    display: block;
+    opacity: .3;
+    letter-spacing: .02em;
+  }
 
   &__text {
     outline: none;

@@ -92,11 +92,14 @@ function printGlyphGlazers(arr) {
     $gazeText.html(gazeState.text)
     $gazeText.attr('contenteditable', 'true');
 
-    // Addand font styles
+    // Add font styles
     $gazeWrapper.css({
       'font-family': fontName,
       'font-weight': fontWeight
     })
+
+    // Add font name to data attribute for css display 
+    $gazeWrapper.attr('data-fontname', fontName)
 
     // Append to DOM
     $gazeWrapper.append($gazeText, $gazeMetrics)

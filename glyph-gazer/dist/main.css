@@ -2,6 +2,9 @@
   box-sizing: border-box;
   margin: 0; }
 
+html {
+  font-size: 16px; }
+
 body {
   color: #222;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
@@ -24,6 +27,14 @@ input {
   margin-bottom: .2em;
   position: relative;
   text-align: center; }
+  .gaze::after {
+    content: attr(data-fontname);
+    font-size: 0.8rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-weight: 400;
+    display: block;
+    opacity: .3;
+    letter-spacing: .02em; }
   .gaze__text {
     outline: none; }
   .gaze__metrics {
