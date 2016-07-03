@@ -37,10 +37,17 @@ body {
   input {
     background-color: transparent;
     border: 0;
-    flex-grow: 1;
     font-size: $font-size;
     outline: none;
     padding: 0 1rem;
+    border-right: 1px solid white;
+  }
+
+  &__gaze-fonts{
+    flex-grow: 3;
+  }
+  &__gaze-opentype{
+    flex-grow: 1;
   }
 
   &__gaze-settings {

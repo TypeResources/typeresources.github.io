@@ -73,10 +73,14 @@ body {
   .gaze-header input {
     background-color: transparent;
     border: 0;
-    flex-grow: 1;
     font-size: 0.8rem;
     outline: none;
-    padding: 0 1rem; }
+    padding: 0 1rem;
+    border-right: 1px solid white; }
+  .gaze-header__gaze-fonts {
+    flex-grow: 3; }
+  .gaze-header__gaze-opentype {
+    flex-grow: 1; }
   .gaze-header__gaze-settings {
     padding: 0;
     text-align: right; }
