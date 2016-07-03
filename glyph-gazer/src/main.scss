@@ -1,8 +1,11 @@
+@import '_fontello-embedded';
+
 $font-size: .8rem;
 $sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 
 $color-grey: #f3f3f1;
 $color-body: #222;
+
 
 * {
   box-sizing: border-box;
@@ -19,17 +22,42 @@ body {
   padding: calc(5vh + 4rem) 0 5vh;
 }
 
-input {
+.gaze-header{
   background-color: rgba($color-grey, .98);
-  border: 0;
-  font-size: $font-size;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   left: 0;
-  outline: none;
-  padding: 1rem;
+  line-height: 3.1rem;
   position: fixed;
+  right: 0;
   top: 0;
-  width: 100%;
   z-index: 5000;
+
+  input {
+    background-color: transparent;
+    border: 0;
+    flex-grow: 100;
+    font-size: $font-size;
+    outline: none;
+    padding: 0 1rem;
+  }
+
+  &__gaze-settings {
+    padding: 0;
+    text-align: right;
+
+    i {
+      color: $color-body;
+      display: inline-block;
+      opacity: 0.6;
+      padding: 0 0.8rem;
+      &:hover {
+        background-color: lighten($color-grey,2%);
+        opacity: 1;
+      }
+    }
+  }
 }
 
 .gaze {
@@ -46,10 +74,12 @@ input {
     display: block;
     opacity: .3;
     letter-spacing: .02em;
+    padding: 0 2rem ;
   }
 
   &__text {
     outline: none;
+    padding: 0 2rem ;
   }
 
   &__metrics {

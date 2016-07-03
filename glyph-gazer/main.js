@@ -3,9 +3,12 @@
 ///////////////////
 
 // State
-var gazeState = {
-  text: "abcde",
-  fonts: "Open Sans, Roboto"
+
+var gazeState = {}
+var gazeStateDefaults = {
+  text: "Abcde",
+  fonts: "Open Sans, Roboto, Source Sans Pro",
+  textAlign: 'center'
 }
 var localStorageGazeState = localStorage.getItem('gazeState')
 
@@ -13,6 +16,7 @@ var localStorageGazeState = localStorage.getItem('gazeState')
 var $gazeContainer = $('#gaze-container')
 var $gazeInputFonts = $('#gaze-fonts')
 var $fontsList = $('#fonts-list')
+var $gazeSettings = $('#gaze-settings')
 
 // Other
 var googleFontsUrl = "https://fonts.googleapis.com/css?family="
@@ -95,7 +99,8 @@ function printGlyphGlazers(arr) {
     // Add font styles
     $gazeWrapper.css({
       'font-family': fontName,
-      'font-weight': fontWeight
+      'font-weight': fontWeight,
+      'text-align': gazeState.textAlign
     })
 
     // Add font name to data attribute for css display 
@@ -141,7 +146,7 @@ function getBaseUrl(){
 // Convert object to URI string
 function stateToUri(obj){
   // Set values to sync to URI
-  var valuesToSync = ['fonts', 'text']
+  var valuesToSync = ['textAlign','fonts', 'text']
   
   // Initialize URI string
   uriStr = '?'
@@ -173,7 +178,14 @@ function prettifyCSV(csvStr){
 }
 
 
+function resetToDefaults(){
+  gazeState = gazeStateDefaults
+}
 
+
+function updateView(){
+
+}
 
 
 //////////////
@@ -181,6 +193,7 @@ function prettifyCSV(csvStr){
 //////////////
 
 // Extends default gazeState with any url parameters
+gazeState = $.extend({}, gazeState, gazeStateDefaults)
 gazeState = $.extend({}, gazeState, getLocalStorageGazeState())
 gazeState = $.extend({}, gazeState, getUrlGazeState())
 setLocalStorageState()
@@ -208,6 +221,28 @@ $gazeInputFonts.keyup(function(e) {
   printGlyphGlazers(parseCsvToArray(gazeState.fonts))
   updateUrl()
 })
+
+
+// Apply Settings
+$gazeSettings.on('click', function(e){
+  var $targ = $(e.target)
+
+  if ( $targ.hasClass('align-left') ) {
+    gazeState.textAlign = 'left';
+  }else if ( $targ.hasClass('align-center') ){
+    gazeState.textAlign = 'center';
+  }else if ( $targ.hasClass('align-right') ){
+    gazeState.textAlign = 'right';
+  }else if ( $targ.hasClass('reset') ){
+    resetToDefaults();
+    // Fill input with font
+    $gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
+  }
+  setLocalStorageState()
+  updateUrl()
+  printGlyphGlazers(parseCsvToArray(gazeState.fonts))
+})
+
 
 // Fill input with font
 $gazeInputFonts.val( prettifyCSV(gazeState.fonts) )

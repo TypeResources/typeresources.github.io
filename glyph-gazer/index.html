@@ -11,7 +11,15 @@
 </head>
 
 <body>
-  <input id="gaze-fonts" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <div class="gaze-header">
+    <input id="gaze-fonts" class="gaze-header__gaze-fonts" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <div id="gaze-settings" class="gaze-header__gaze-settings">
+      <i class="align-left icon-align-left"></i>
+      <i class="align-center icon-align-center"></i>
+      <i class="align-right icon-align-right"></i>
+      <i class="reset icon-ccw"></i>
+    </div>
+  </div>
 
   <div id="font-loading"></div>
   <div id="gaze-container" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
