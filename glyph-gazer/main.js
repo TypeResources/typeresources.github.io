@@ -280,9 +280,10 @@ $gazeSettings.on('click', function(e){
   }else if ( $targ.hasClass('reset') ){
     resetToDefaults();
 
-    // Update DOM and styl
+    // Update DOM and styles
     $gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
     $gazeInputOpenType.val( prettifyCSV(gazeState.openType) );
+    printGlyphGlazers(parseCsvToArray(gazeState.fonts))
     updateOpenTypeCss(gazeState.openType)
   }
   setLocalStorageState()
