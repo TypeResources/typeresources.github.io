@@ -240,7 +240,7 @@ $gazeSettings.on('click', function(e){
   }
   setLocalStorageState()
   updateUrl()
-  printGlyphGlazers(parseCsvToArray(gazeState.fonts))
+  $('.gaze').css('text-align',gazeState.textAlign)
 })
 
 
