@@ -148,7 +148,7 @@ function getBaseUrl(){
 // Convert object to URI string
 function stateToUri(obj){
   // Set values to sync to URI
-  var valuesToSync = ['textAlign','fonts', 'text']
+  var valuesToSync = ['openType','textAlign','fonts', 'text']
   
   // Initialize URI string
   uriStr = '?'
