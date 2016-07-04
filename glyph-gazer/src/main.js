@@ -3,7 +3,6 @@
 ///////////////////
 
 // State
-
 var gazeState = {}
 var gazeStateDefaults = {
   text: "Adhesion",
@@ -23,7 +22,6 @@ var $gazeSettingsButton = $('#gaze-settings button')
 // Other
 var googleFontsUrl = "https://fonts.googleapis.com/css?family="
 var svg = '<svg><use xlink:href="#lines"/></svg>'
-
 
 
 ///////////////////
@@ -74,7 +72,6 @@ function parseCsvToArray(list) {
   return parsed
 }
 
-
 // Print out divs for all fonts
 function printGlyphGlazers(arr) {
   $gazeContainer.empty()
@@ -113,7 +110,6 @@ function printGlyphGlazers(arr) {
     $gazeContainer.append($gazeWrapper)
   })
 }
-
 
 // Get Google Fonts URI compatible string from array of font objects
 function getGoogleFontsURI(arr) {
@@ -176,19 +172,15 @@ function stateToUri(obj){
   return uriStr
 }
 
-
 // Prettify CSV with space after comma
 function prettifyCSV(csvStr){
   return csvStr.replace(/,/g, ", ");
 }
 
-
 function resetToDefaults(){
   gazeState = {}
   gazeState = $.extend({}, gazeState, gazeStateDefaults)
 }
-
-
 
 function csvValuesToStringValues(str){
   //remove spaces
@@ -231,7 +223,6 @@ function updateOpenTypeCss(stateVal){
 //// USER INTERACTION ////
 //////////////////////////
 
-
 // Update state on gaze text edit
 $gazeContainer.keyup(function(e) {
   var $thisGaze = $(e.target)
@@ -261,17 +252,16 @@ $gazeInputOpenType.keyup(function(e) {
   updateOpenTypeCss(inputVal)
 })
 
-
 // Apply Settings
 $gazeSettingsButton.on('click', function(){
   $this = $(this)
   if ( $this.hasClass('align-left') ) {
     gazeState.textAlign = 'left';
-  }else if ( $this.hasClass('align-center') ){
+  } else if ( $this.hasClass('align-center') ) {
     gazeState.textAlign = 'center';
-  }else if ( $this.hasClass('align-right') ){
+  } else if ( $this.hasClass('align-right') ) {
     gazeState.textAlign = 'right';
-  }else if ( $this.hasClass('reset') ){
+  } else if ( $this.hasClass('reset') ) {
     resetToDefaults();
 
     // Update DOM and styles
@@ -286,15 +276,12 @@ $gazeSettingsButton.on('click', function(){
 })
 
 
-
 //////////////
 //// INIT ////
 //////////////
 
-
 // Loads svg4everybody polyfill in old browsers
 svg4everybody();
-
 
 // Extends default gazeState with any url parameters
 gazeState = $.extend({}, gazeState, gazeStateDefaults)
@@ -307,7 +294,6 @@ $gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
 
 // Fill input with OpenType
 $gazeInputOpenType.val( prettifyCSV(gazeState.openType) )
-
 
 loadGoogleFonts(parseCsvToArray(gazeState.fonts))
 printGlyphGlazers(parseCsvToArray(gazeState.fonts))
