@@ -33,6 +33,10 @@ input {
   padding: 0 $padding-default;
 }
 
+svg {
+  fill: $color-body;
+}
+
 .icon {
   height: 24px;
   width: 24px;
@@ -89,11 +93,15 @@ input {
     padding: 0 $padding-default;
   }
 
+  > * {
+    transition: font-size .15s ease;
+  }
+
   &__text {
     outline: none;
     overflow: hidden;
-    white-space: nowrap;
     padding: 0 $padding-default;
+    white-space: nowrap;
   }
 
   &__metrics {
