@@ -1,0 +1,121 @@
+@import 'button';
+
+$font-size: .8rem;
+$sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+$color-grey: #f3f3f1;
+$color-body: #222;
+$color-metric-line: rgba($color-body, .2);
+$black: #000;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+body {
+  color: $color-body;
+  font-family: $sans-serif;
+  padding: calc(5vh + 4rem) 0 5vh;
+}
+
+.icon {
+  height: 24px;
+  width: 24px;
+}
+
+.gaze-header {
+  background-color: rgba($color-grey, .98);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 5000;
+
+  input {
+    background-color: transparent;
+    border: 0;
+    flex-grow: 1;
+    font-size: $font-size;
+    outline: none;
+    padding: 0 1rem;
+  }
+
+  &__settings {
+    font-size: 0;
+    line-height: 0;
+  }
+}
+
+.gaze {
+  font-size: calc(10vw + 10vh);
+  position: relative;
+  text-align: center;
+
+  &::after {
+    content: attr(data-fontname);
+    display: block;
+    font-family: $sans-serif;
+    font-size: $font-size;
+    font-weight: 400;
+    letter-spacing: .02em;
+    margin-top: -.5rem;
+    opacity: .3;
+    padding: 0 2rem;
+  }
+
+  &__text {
+    outline: none;
+    padding: 0 2rem;
+  }
+
+  &__metrics {
+    height: 100%;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+
+    svg {
+      background-color: rgba($color-grey, .4);
+      border-bottom: 1px solid $color-metric-line;
+      border-top: 1px solid $color-metric-line;
+      content: '';
+      display: inline-block;
+      height: 1ex;
+      overflow: visible;
+      stroke: $color-metric-line;
+      stroke-width: 1;
+      vertical-align: baseline;
+      width: 100%;
+    }
+  }
+}
+// Print styles
+@media print {
+  body {
+    color: $black;
+    padding-top: 0;
+  }
+
+  .gaze__metrics svg {
+    stroke-width: .5;
+  }
+
+  .gaze-header {
+    background-color: transparent;
+    position: relative;
+
+    &__settings {
+      display: none;
+    }
+  }
+}
