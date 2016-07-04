@@ -195,7 +195,6 @@ function csvValuesToStringValues(str){
 function updateOpenTypeCss(stateVal){
   gazeState.openType = stateVal
   setLocalStorageState()
-  updateUrl()
 
   // Generate css compatible OpenType feature list
   // each feature must be exactly 4 chars each
@@ -234,7 +233,6 @@ $gazeContainer.keyup(function(e) {
   // Update states
   gazeState.text = gazeText
   setLocalStorageState()
-  updateUrl()
 })
 
 // Update state on font list edit
@@ -243,7 +241,6 @@ $gazeInputFonts.keyup(function(e) {
   setLocalStorageState()
   loadGoogleFonts(parseCsvToArray(gazeState.fonts))
   printGlyphGlazers(parseCsvToArray(gazeState.fonts))
-  updateUrl()
 })
 
 // Update state on Open Type edit
@@ -261,6 +258,8 @@ $gazeSettingsButton.on('click', function(){
     gazeState.textAlign = 'center';
   } else if ( $this.hasClass('align-right') ) {
     gazeState.textAlign = 'right';
+  } else if ( $this.hasClass('share-url') ) {
+    updateUrl()
   } else if ( $this.hasClass('reset') ) {
     resetToDefaults();
 
@@ -271,7 +270,6 @@ $gazeSettingsButton.on('click', function(){
     updateOpenTypeCss(gazeState.openType)
   }
   setLocalStorageState()
-  updateUrl()
   $('.gaze').css('text-align',gazeState.textAlign)
 })
 
@@ -282,7 +280,6 @@ $('#gaze-zoom').on('change click', function(){
   $('.gaze').children().css('font-size', zoomLevel)
   // gazeState.zoom = $(this).val()
   // setLocalStorageState()
-  // updateUrl()
 })
 
 
@@ -308,4 +305,3 @@ $gazeInputOpenType.val( prettifyCSV(gazeState.openType) )
 loadGoogleFonts(parseCsvToArray(gazeState.fonts))
 printGlyphGlazers(parseCsvToArray(gazeState.fonts))
 updateOpenTypeCss(gazeState.openType)
-updateUrl()
