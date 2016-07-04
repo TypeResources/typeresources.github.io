@@ -26,6 +26,13 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   padding: calc(5vh + 4rem) 0 5vh; }
 
+input {
+  background-color: transparent;
+  border: 0;
+  font-size: 0.8rem;
+  outline: none;
+  padding: 0 1rem; }
+
 .icon {
   height: 24px;
   width: 24px; }
@@ -40,13 +47,8 @@ body {
   right: 0;
   top: 0;
   z-index: 5000; }
-  .gaze-header input {
-    background-color: transparent;
-    border: 0;
-    border-right: 1px solid #fff;
-    font-size: 0.8rem;
-    outline: none;
-    padding: 0 1rem; }
+  .gaze-header > :not(:last-child) {
+    border-right: 1px solid #fff; }
   .gaze-header__fonts {
     flex-grow: 3; }
   .gaze-header__opentype {
@@ -54,9 +56,12 @@ body {
   .gaze-header__settings {
     font-size: 0;
     line-height: 0; }
+  .gaze-header__zoom {
+    padding-right: 0;
+    width: 4rem; }
 
 .gaze {
-  font-size: calc(10vw + 10vh);
+  font-size: 15vw;
   position: relative;
   text-align: center; }
   .gaze::after {
@@ -71,6 +76,8 @@ body {
     padding: 0 1rem; }
   .gaze__text {
     outline: none;
+    overflow: hidden;
+    white-space: nowrap;
     padding: 0 1rem; }
   .gaze__metrics {
     height: 100%;

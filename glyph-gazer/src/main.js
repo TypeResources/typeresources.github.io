@@ -6,7 +6,7 @@
 var gazeState = {}
 var gazeStateDefaults = {
   text: "Adhesion",
-  fonts: "Open Sans, Roboto, Source Sans Pro",
+  fonts: "Open Sans, Roboto:900, Source Sans Pro:200",
   textAlign: 'center',
   openType: 'frac'
 }
@@ -144,7 +144,7 @@ function getBaseUrl(){
 // Convert object to URI string
 function stateToUri(obj){
   // Set values to sync to URI
-  var valuesToSync = ['openType','textAlign','fonts', 'text']
+  var valuesToSync = ['openType', 'textAlign', 'fonts', 'text']
 
   // Initialize URI string
   uriStr = '?'
@@ -273,6 +273,16 @@ $gazeSettingsButton.on('click', function(){
   setLocalStorageState()
   updateUrl()
   $('.gaze').css('text-align',gazeState.textAlign)
+})
+
+// Zoom based on input
+// TODO save zoomlevel to state and then update css based on state
+$('#gaze-zoom').on('change click', function(){
+  var zoomLevel = $('#gaze-zoom').val() * 100 + '%'
+  $('.gaze').children().css('font-size', zoomLevel)
+  // gazeState.zoom = $(this).val()
+  // setLocalStorageState()
+  // updateUrl()
 })
 
 

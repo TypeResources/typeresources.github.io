@@ -25,6 +25,14 @@ body {
   padding: calc(5vh + 4rem) 0 5vh;
 }
 
+input {
+  background-color: transparent;
+  border: 0;
+  font-size: $font-size;
+  outline: none;
+  padding: 0 $padding-default;
+}
+
 .icon {
   height: 24px;
   width: 24px;
@@ -41,13 +49,8 @@ body {
   top: 0;
   z-index: 5000;
 
-  input {
-    background-color: transparent;
-    border: 0;
+  > :not(:last-child) {
     border-right: 1px solid $white;
-    font-size: $font-size;
-    outline: none;
-    padding: 0 $padding-default;
   }
 
   &__fonts {
@@ -62,10 +65,15 @@ body {
     font-size: 0;
     line-height: 0;
   }
+
+  &__zoom {
+    padding-right: 0;
+    width: 4rem;
+  }
 }
 
 .gaze {
-  font-size: calc(10vw + 10vh);
+  font-size: 15vw;
   position: relative;
   text-align: center;
 
@@ -83,6 +91,8 @@ body {
 
   &__text {
     outline: none;
+    overflow: hidden;
+    white-space: nowrap;
     padding: 0 $padding-default;
   }
 
