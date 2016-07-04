@@ -118,6 +118,7 @@ body {
       content: '';
       display: inline-block;
       height: 1ex;
+      overflow: visible;
       stroke: rgba(34, 34, 34, 0.2);
       stroke-width: 1;
       vertical-align: baseline;

@@ -95,6 +95,7 @@ body {
       content: '';
       display: inline-block;
       height: 1ex;
+      overflow: visible;
       stroke: rgba($color-body, .2);
       stroke-width: 1;
       vertical-align: baseline;
