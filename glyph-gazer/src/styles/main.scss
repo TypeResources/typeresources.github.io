@@ -1,5 +1,4 @@
 @import 'button';
-
 $font-size: .8rem;
 $sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 $color-grey: #f3f3f1;
@@ -8,6 +7,7 @@ $color-metric-line: rgba($color-body, .2);
 $black: #000;
 $white: #fff;
 $padding-default: 1rem;
+$heading-scale: 1.618;
 
 * {
   box-sizing: border-box;
@@ -22,19 +22,44 @@ html {
 body {
   color: $color-body;
   font-family: $sans-serif;
-  padding: calc(5vh + 4rem) 0 5vh;
+  font-weight: 300;
+  padding: calc(5vh + 4rem) $padding-default 5vh;
 }
 
 input {
   background-color: transparent;
   border: 0;
   font-size: $font-size;
+  font-weight: inherit;
   outline: none;
   padding: 0 $padding-default;
 }
 
 svg {
   fill: $color-body;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: inherit;
+  margin-top: 1rem;
+}
+
+h1 {
+  font-size: 1rem * $heading-scale * 3;
+}
+
+h2 {
+  font-size: 1rem * $heading-scale * 2;
+}
+
+h3 {
+  font-size: 1rem * $heading-scale;
+}
+
+a {
+  text-decoration: none;
 }
 
 .icon {
@@ -90,7 +115,6 @@ svg {
     letter-spacing: .02em;
     margin-top: -1rem;
     opacity: .3;
-    padding: 0 $padding-default;
   }
 
   > * {
@@ -100,16 +124,16 @@ svg {
   &__text {
     outline: none;
     overflow: hidden;
-    padding: 0 $padding-default;
     white-space: nowrap;
   }
 
   &__metrics {
     height: 100%;
+    left: -$padding-default;
+    right: -$padding-default;
     pointer-events: none;
     position: absolute;
     top: 0;
-    width: 100%;
     z-index: -1;
 
     svg {
@@ -119,7 +143,6 @@ svg {
       content: '';
       display: inline-block;
       height: 1ex;
-      overflow: visible;
       shape-rendering: geometricPrecision;
       stroke: rgba($color-metric-line, .15);
       stroke-width: 1;
@@ -128,11 +151,21 @@ svg {
     }
   }
 }
+
+.tips {
+  margin: $padding-default * 6 auto $padding-default * 2;
+  max-width: 40rem;
+}
+
 // Print styles
 @media print {
   body {
     color: $black;
     padding-top: 0;
+  }
+
+  .tips {
+    display: none;
   }
 
   .gaze__metrics svg {
