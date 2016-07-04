@@ -9,7 +9,12 @@ button {
   padding: .5rem;
   user-select: none;
 
+  &:focus,
   &:hover {
     background-color: rgba(white, .5);
+  }
+
+  &:focus {
+    outline: 0;
   }
 }

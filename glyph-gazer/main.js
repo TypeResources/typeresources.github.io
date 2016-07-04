@@ -8,13 +8,15 @@ var gazeState = {}
 var gazeStateDefaults = {
   text: "Abcde",
   fonts: "Open Sans, Roboto, Source Sans Pro",
-  textAlign: 'center'
+  textAlign: 'center',
+  openType: 'frac'
 }
 var localStorageGazeState = localStorage.getItem('gazeState')
 
 // DOM Elements
 var $gazeContainer = $('#gaze-container')
 var $gazeInputFonts = $('#gaze-fonts')
+var $gazeInputOpenType = $('#gaze-opentype')
 var $fontsList = $('#fonts-list')
 var $gazeSettingsButton = $('#gaze-settings button')
 
@@ -146,7 +148,7 @@ function getBaseUrl(){
 // Convert object to URI string
 function stateToUri(obj){
   // Set values to sync to URI
-  var valuesToSync = ['textAlign','fonts', 'text']
+  var valuesToSync = ['openType','textAlign','fonts', 'text']
   
   // Initialize URI string
   uriStr = '?'
@@ -157,7 +159,10 @@ function stateToUri(obj){
 
     // Remove whitespaces
     value = value.replace(/, /g, ",");
-    value = encodeURIComponent(value); 
+    value = encodeURI(value);
+
+    // fix '#'' url problem
+    value = value.replace(/#/g, "%23"); 
 
     // Build URI
     uriStr += key + '='
@@ -179,13 +184,49 @@ function prettifyCSV(csvStr){
 
 
 function resetToDefaults(){
-  gazeState = gazeStateDefaults
+  gazeState = {}
+  gazeState = $.extend({}, gazeState, gazeStateDefaults)
 }
 
 
-function updateView(){
 
+function csvValuesToStringValues(str){
+  //remove spaces
+  str = str.replace(/ /g, "");
+  //add quotes
+  str = '"' + str
+  str = str.replace(/,/g, '", "');
+  str = str + '"'
+  return str
 }
+
+function updateOpenTypeCss(stateVal){
+  gazeState.openType = stateVal
+  setLocalStorageState()
+  updateUrl()
+
+  // Generate css compatible OpenType feature list
+  // each feature must be exactly 4 chars each
+  var otFeats = gazeState.openType
+
+  // Remove whitespace
+  otFeats = otFeats.replace(/ /g, "");
+
+  // Remove all non-4-char values
+  var dirtyArr = otFeats.split(",")
+  var cleanArr = []
+  for (var i = 0; i < dirtyArr.length; i++) {
+    if (dirtyArr[i].length == 4) {
+      cleanArr.push(dirtyArr[i])
+    };
+  };
+
+  // Add double quotemark to values
+  var otCssString = csvValuesToStringValues(cleanArr.toString())
+  $gazeContainer.attr('style', 'font-feature-settings: ' + otCssString)
+}
+
+
 
 
 //////////////
@@ -227,6 +268,12 @@ $gazeInputFonts.keyup(function(e) {
   updateUrl()
 })
 
+// Update state on Open Type edit
+$gazeInputOpenType.keyup(function(e) {
+  var inputVal = $(this).val()
+  updateOpenTypeCss(inputVal)
+})
+
 
 // Apply Settings
 $gazeSettingsButton.on('click', function(){
@@ -239,8 +286,12 @@ $gazeSettingsButton.on('click', function(){
     gazeState.textAlign = 'right';
   }else if ( $this.hasClass('reset') ){
     resetToDefaults();
-    // Fill input with font
+
+    // Update DOM and styles
     $gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
+    $gazeInputOpenType.val( prettifyCSV(gazeState.openType) );
+    printGlyphGlazers(parseCsvToArray(gazeState.fonts))
+    updateOpenTypeCss(gazeState.openType)
   }
   setLocalStorageState()
   updateUrl()
@@ -251,7 +302,11 @@ $gazeSettingsButton.on('click', function(){
 // Fill input with font
 $gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
 
-// fetchStorageFontList()
+// Fill input with OpenType
+$gazeInputOpenType.val( prettifyCSV(gazeState.openType) )
+
+
 loadGoogleFonts(parseCsvToArray(gazeState.fonts))
 printGlyphGlazers(parseCsvToArray(gazeState.fonts))
+updateOpenTypeCss(gazeState.openType)
 updateUrl()

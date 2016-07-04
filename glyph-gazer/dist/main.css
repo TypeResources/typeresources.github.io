@@ -8,8 +8,10 @@ button {
   overflow: visible;
   padding: .5rem;
   user-select: none; }
-  button:hover {
+  button:focus, button:hover {
     background-color: rgba(255, 255, 255, 0.5); }
+  button:focus {
+    outline: 0; }
 
 * {
   box-sizing: border-box;
@@ -41,10 +43,14 @@ body {
   .gaze-header input {
     background-color: transparent;
     border: 0;
-    flex-grow: 1;
+    border-right: 1px solid #fff;
     font-size: 0.8rem;
     outline: none;
     padding: 0 1rem; }
+  .gaze-header__fonts {
+    flex-grow: 3; }
+  .gaze-header__opentype {
+    flex-grow: 1; }
   .gaze-header__settings {
     font-size: 0;
     line-height: 0; }
@@ -62,10 +68,10 @@ body {
     letter-spacing: .02em;
     margin-top: -.5rem;
     opacity: .3;
-    padding: 0 2rem; }
+    padding: 0 1rem; }
   .gaze__text {
     outline: none;
-    padding: 0 2rem; }
+    padding: 0 1rem; }
   .gaze__metrics {
     height: 100%;
     pointer-events: none;
@@ -81,7 +87,8 @@ body {
       display: inline-block;
       height: 1ex;
       overflow: visible;
-      stroke: rgba(34, 34, 34, 0.2);
+      shape-rendering: geometricPrecision;
+      stroke: rgba(34, 34, 34, 0.15);
       stroke-width: 1;
       vertical-align: baseline;
       width: 100%; }

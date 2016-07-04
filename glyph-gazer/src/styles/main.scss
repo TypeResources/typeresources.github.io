@@ -6,6 +6,8 @@ $color-grey: #f3f3f1;
 $color-body: #222;
 $color-metric-line: rgba($color-body, .2);
 $black: #000;
+$white: #fff;
+$padding-default: 1rem;
 
 * {
   box-sizing: border-box;
@@ -42,10 +44,18 @@ body {
   input {
     background-color: transparent;
     border: 0;
-    flex-grow: 1;
+    border-right: 1px solid $white;
     font-size: $font-size;
     outline: none;
-    padding: 0 1rem;
+    padding: 0 $padding-default;
+  }
+
+  &__fonts {
+    flex-grow: 3;
+  }
+
+  &__opentype {
+    flex-grow: 1;
   }
 
   &__settings {
@@ -68,12 +78,12 @@ body {
     letter-spacing: .02em;
     margin-top: -.5rem;
     opacity: .3;
-    padding: 0 2rem;
+    padding: 0 $padding-default;
   }
 
   &__text {
     outline: none;
-    padding: 0 2rem;
+    padding: 0 $padding-default;
   }
 
   &__metrics {
@@ -92,7 +102,8 @@ body {
       display: inline-block;
       height: 1ex;
       overflow: visible;
-      stroke: $color-metric-line;
+      shape-rendering: geometricPrecision;
+      stroke: rgba($color-metric-line, .15);
       stroke-width: 1;
       vertical-align: baseline;
       width: 100%;
