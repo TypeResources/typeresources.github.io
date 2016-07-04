@@ -227,22 +227,9 @@ function updateOpenTypeCss(stateVal){
 }
 
 
-
-
-//////////////
-//// INIT ////
-//////////////
-
-
-// Loads svg4everybody polyfill in old browsers
-svg4everybody();
-
-
-// Extends default gazeState with any url parameters
-gazeState = $.extend({}, gazeState, gazeStateDefaults)
-gazeState = $.extend({}, gazeState, getLocalStorageGazeState())
-gazeState = $.extend({}, gazeState, getUrlGazeState())
-setLocalStorageState()
+//////////////////////////
+//// USER INTERACTION ////
+//////////////////////////
 
 
 // Update state on gaze text edit
@@ -298,6 +285,22 @@ $gazeSettingsButton.on('click', function(){
   $('.gaze').css('text-align',gazeState.textAlign)
 })
 
+
+
+//////////////
+//// INIT ////
+//////////////
+
+
+// Loads svg4everybody polyfill in old browsers
+svg4everybody();
+
+
+// Extends default gazeState with any url parameters
+gazeState = $.extend({}, gazeState, gazeStateDefaults)
+gazeState = $.extend({}, gazeState, getLocalStorageGazeState())
+gazeState = $.extend({}, gazeState, getUrlGazeState())
+setLocalStorageState()
 
 // Fill input with font
 $gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
