@@ -5,9 +5,10 @@ var rename = require('gulp-rename');
 var sass = require('gulp-sass');
 var svgmin = require('gulp-svgmin');
 var svgstore = require('gulp-svgstore');
+var uglify = require('gulp-uglify');
 
 // Static Server + watching scss/html files
-gulp.task('serve', ['sass'], function() {
+gulp.task('serve', ['sass', 'js', 'svg-sprite'], function() {
 
   browserSync.init({
     server: {
@@ -16,14 +17,22 @@ gulp.task('serve', ['sass'], function() {
   });
 
   gulp.watch('src/styles/*.scss', ['sass']);
+  gulp.watch('src/*.js', ['js']);
   gulp.watch('*.html').on('change', browserSync.reload);
-  gulp.watch('*.js').on('change', browserSync.reload);
 });
 
 // Compile sass into CSS & auto-inject into browsers
 gulp.task('sass', function() {
   return gulp.src('src/styles/main.scss')
     .pipe(sass())
+    .pipe(gulp.dest('dist/'))
+    .pipe(browserSync.stream());
+});
+
+// Compress JS
+gulp.task('js', function (cb) {
+  return gulp.src('src/main.js')
+    .pipe(uglify())
     .pipe(gulp.dest('dist/'))
     .pipe(browserSync.stream());
 });

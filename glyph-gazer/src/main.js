@@ -105,7 +105,7 @@ function printGlyphGlazers(arr) {
       'text-align': gazeState.textAlign
     })
 
-    // Add font name to data attribute for css display 
+    // Add font name to data attribute for css display
     $gazeWrapper.attr('data-fontname', fontName)
 
     // Append to DOM
@@ -149,12 +149,12 @@ function getBaseUrl(){
 function stateToUri(obj){
   // Set values to sync to URI
   var valuesToSync = ['openType','textAlign','fonts', 'text']
-  
+
   // Initialize URI string
   uriStr = '?'
 
   for (var i = valuesToSync.length - 1; i >= 0; i--) {
-    var key = valuesToSync[i] 
+    var key = valuesToSync[i]
     var value = gazeState[key]
 
     // Remove whitespaces
@@ -162,7 +162,7 @@ function stateToUri(obj){
     value = encodeURI(value);
 
     // fix '#'' url problem
-    value = value.replace(/#/g, "%23"); 
+    value = value.replace(/#/g, "%23");
 
     // Build URI
     uriStr += key + '='
@@ -171,7 +171,7 @@ function stateToUri(obj){
   };
 
   // Lazy remove last ampersand
-  uriStr = uriStr.slice(0, -1)  
+  uriStr = uriStr.slice(0, -1)
 
   return uriStr
 }
@@ -179,7 +179,7 @@ function stateToUri(obj){
 
 // Prettify CSV with space after comma
 function prettifyCSV(csvStr){
-  return csvStr.replace(/,/g, ", "); 
+  return csvStr.replace(/,/g, ", ");
 }
 
 
