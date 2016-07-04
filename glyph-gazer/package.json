@@ -9,8 +9,12 @@
   "author": "Teddy Derkert & Andreas Larsen",
   "license": "MIT",
   "devDependencies": {
-    "gulp": "^3.9.1",
     "browser-sync": "^2.13.0",
-    "gulp-sass": "^2.3.2"
+    "gulp": "^3.9.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-svgmin": "^1.2.2",
+    "gulp-svgstore": "^6.0.0"
   }
 }
