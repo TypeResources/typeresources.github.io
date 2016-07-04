@@ -16,6 +16,7 @@ gulp.task('serve', ['sass', 'js', 'svg-sprite'], function() {
     }
   });
 
+  gulp.watch('src/icons/*.svg', ['svg-sprite']);
   gulp.watch('src/styles/*.scss', ['sass']);
   gulp.watch('src/*.js', ['js']);
   gulp.watch('*.html').on('change', browserSync.reload);
