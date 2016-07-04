@@ -281,7 +281,7 @@ $gazeSettingsButton.on('click', function(){
 //////////////
 
 // Loads svg4everybody polyfill in old browsers
-svg4everybody();
+svg4everybody()
 
 // Extends default gazeState with any url parameters
 gazeState = $.extend({}, gazeState, gazeStateDefaults)
