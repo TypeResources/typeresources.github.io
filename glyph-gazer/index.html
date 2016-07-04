@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
 
   <title>Type Resources | Glyph Gazer</title>
   <meta name="description" content="">
@@ -12,12 +13,12 @@
 
 <body>
   <div class="gaze-header">
-    <input id="gaze-fonts" class="gaze-header__gaze-fonts" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-    <div id="gaze-settings" class="gaze-header__gaze-settings">
-      <i class="align-left icon-align-left"></i>
-      <i class="align-center icon-align-center"></i>
-      <i class="align-right icon-align-right"></i>
-      <i class="reset icon-ccw"></i>
+    <input id="gaze-fonts" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <div id="gaze-settings" class="gaze-header__settings">
+      <button class="align-left"><svg class="icon"><use xlink:href="/dist/icons.svg#sprite_align-left"/></svg></button>
+      <button class="align-center"><svg class="icon"><use xlink:href="/dist/icons.svg#sprite_align-center"/></svg></button>
+      <button class="align-right"><svg class="icon"><use xlink:href="/dist/icons.svg#sprite_align-right"/></svg></button>
+      <button class="reset"><svg class="icon"><use xlink:href="/dist/icons.svg#sprite_refresh"/></svg></button>
     </div>
   </div>
 
@@ -26,12 +27,13 @@
 
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
     <symbol viewBox="0 0 1 4" id="lines" preserveAspectRatio="none">
-      <path d="M0 0h1M0 1h1M0 2h1M0 3h1M0 4h1" vector-effect="non-scaling-stroke"/>
+      <path d="M0 1h1M0 2h1M0 3h1" vector-effect="non-scaling-stroke"/>
     </symbol>
   </svg>
 
   <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/svg4everybody/2.1.0/svg4everybody.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

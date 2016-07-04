@@ -16,7 +16,7 @@ var localStorageGazeState = localStorage.getItem('gazeState')
 var $gazeContainer = $('#gaze-container')
 var $gazeInputFonts = $('#gaze-fonts')
 var $fontsList = $('#fonts-list')
-var $gazeSettings = $('#gaze-settings')
+var $gazeSettingsButton = $('#gaze-settings button')
 
 // Other
 var googleFontsUrl = "https://fonts.googleapis.com/css?family="
@@ -192,6 +192,11 @@ function updateView(){
 //// INIT ////
 //////////////
 
+
+// Loads svg4everybody polyfill in old browsers
+svg4everybody();
+
+
 // Extends default gazeState with any url parameters
 gazeState = $.extend({}, gazeState, gazeStateDefaults)
 gazeState = $.extend({}, gazeState, getLocalStorageGazeState())
@@ -224,16 +229,15 @@ $gazeInputFonts.keyup(function(e) {
 
 
 // Apply Settings
-$gazeSettings.on('click', function(e){
-  var $targ = $(e.target)
-
-  if ( $targ.hasClass('align-left') ) {
+$gazeSettingsButton.on('click', function(){
+  $this = $(this)
+  if ( $this.hasClass('align-left') ) {
     gazeState.textAlign = 'left';
-  }else if ( $targ.hasClass('align-center') ){
+  }else if ( $this.hasClass('align-center') ){
     gazeState.textAlign = 'center';
-  }else if ( $targ.hasClass('align-right') ){
+  }else if ( $this.hasClass('align-right') ){
     gazeState.textAlign = 'right';
-  }else if ( $targ.hasClass('reset') ){
+  }else if ( $this.hasClass('reset') ){
     resetToDefaults();
     // Fill input with font
     $gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
