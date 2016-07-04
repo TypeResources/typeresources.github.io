@@ -6,7 +6,7 @@
 
 var gazeState = {}
 var gazeStateDefaults = {
-  text: "Abcde",
+  text: "Adhesion",
   fonts: "Open Sans, Roboto, Source Sans Pro",
   textAlign: 'center',
   openType: 'frac'
