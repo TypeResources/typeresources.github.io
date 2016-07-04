@@ -50,7 +50,7 @@ gulp.task('svg-sprite', function() {
     .pipe(svgmin())
     .pipe(rename({prefix: 'sprite_'}))
     .pipe(svgstore())
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest('dist/'))
     .pipe(browserSync.stream());
 });
 
