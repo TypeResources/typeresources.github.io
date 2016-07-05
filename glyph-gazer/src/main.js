@@ -8,7 +8,8 @@ var gazeStateDefaults = {
   text: "Adhesion",
   fonts: "Open Sans, Roboto:900, Source Sans Pro:200",
   textAlign: 'center',
-  openType: 'frac'
+  openType: 'frac',
+  zoom: '1'
 }
 var localStorageGazeState = localStorage.getItem('gazeState')
 
@@ -16,6 +17,7 @@ var localStorageGazeState = localStorage.getItem('gazeState')
 var $gazeContainer = $('#gaze-container')
 var $gazeInputFonts = $('#gaze-fonts')
 var $gazeInputOpenType = $('#gaze-opentype')
+var $gazeInputZoom = $('#gaze-zoom')
 var $fontsList = $('#fonts-list')
 var $gazeSettingsButton = $('#gaze-settings button')
 
@@ -108,6 +110,9 @@ function printGlyphGlazers(arr) {
     // Append to DOM
     $gazeWrapper.append($gazeText, $gazeMetrics)
     $gazeContainer.append($gazeWrapper)
+
+    // Update Gaze Styles
+    updateZoomCss(gazeState.zoom)
   })
 }
 
@@ -144,21 +149,21 @@ function getBaseUrl(){
 // Convert object to URI string
 function stateToUri(obj){
   // Set values to sync to URI
-  var valuesToSync = ['openType', 'textAlign', 'fonts', 'text']
+  var valuesToSync = ['text', 'fonts', 'openType', 'textAlign', 'zoom']
 
   // Initialize URI string
   uriStr = '?'
 
-  for (var i = valuesToSync.length - 1; i >= 0; i--) {
+  for (var i = 0; i < valuesToSync.length; i++) {
     var key = valuesToSync[i]
     var value = gazeState[key]
 
     // Remove whitespaces
-    value = value.replace(/, /g, ",");
-    value = encodeURI(value);
+    value = value.replace(/, /g, ",")
+    value = encodeURI(value)
 
     // fix '#'' url problem
-    value = value.replace(/#/g, "%23");
+    value = value.replace(/#/g, "%23")
 
     // Build URI
     uriStr += key + '='
@@ -174,21 +179,20 @@ function stateToUri(obj){
 
 // Prettify CSV with space after comma
 function prettifyCSV(csvStr){
-  return csvStr.replace(/,/g, ", ");
+  return csvStr.replace(/,/g, ", ")
 }
 
 function resetToDefaults(){
-  gazeState = {}
-  gazeState = $.extend({}, gazeState, gazeStateDefaults)
+  gazeState = $.extend({}, {}, gazeStateDefaults)
   $('body').removeClass()
 }
 
 function csvValuesToStringValues(str){
   //remove spaces
-  str = str.replace(/ /g, "");
+  str = str.replace(/ /g, "")
   //add quotes
   str = '"' + str
-  str = str.replace(/,/g, '", "');
+  str = str.replace(/,/g, '", "')
   str = str + '"'
   return str
 }
@@ -216,6 +220,12 @@ function updateOpenTypeCss(stateVal){
   // Add double quotemark to values
   var otCssString = csvValuesToStringValues(cleanArr.toString())
   $gazeContainer.attr('style', 'font-feature-settings: ' + otCssString)
+}
+
+function updateZoomCss(multiplier){
+  var percent = multiplier * 100
+  var cssVal = percent + '%'
+  $('.gaze').children().css('font-size', cssVal)
 }
 
 
@@ -264,11 +274,18 @@ $gazeSettingsButton.on('click', function(){
   } else if ( $this.hasClass('reset') ) {
     resetToDefaults();
 
-    // Update DOM and styles
+    // Update View Values
     $gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
     $gazeInputOpenType.val( prettifyCSV(gazeState.openType) );
+    $gazeInputZoom.val( gazeState.zoom )
+
+    // Print Gaze Elements
     printGlyphGlazers(parseCsvToArray(gazeState.fonts))
+
+    // Update Gaze Styles
     updateOpenTypeCss(gazeState.openType)
+    updateZoomCss(gazeState.openType)
+
   } else if ( $this.hasClass('toggle-lines') ) {
     $('body').toggleClass('hide-stuff')
   }
@@ -279,11 +296,15 @@ $gazeSettingsButton.on('click', function(){
 
 // Zoom based on input
 // TODO save zoomlevel to state and then update css based on state
-$('#gaze-zoom').on('change click', function(){
-  var zoomLevel = $('#gaze-zoom').val() * 100 + '%'
-  $('.gaze').children().css('font-size', zoomLevel)
-  // gazeState.zoom = $(this).val()
-  // setLocalStorageState()
+$gazeInputZoom.on('change click', function(){
+  var inputVal = $(this).val()
+
+  // Update State
+  gazeState.zoom = inputVal
+  setLocalStorageState()
+
+  // Update DOM
+  updateZoomCss(gazeState.zoom)
 })
 
 
@@ -300,12 +321,17 @@ gazeState = $.extend({}, gazeState, getLocalStorageGazeState())
 gazeState = $.extend({}, gazeState, getUrlGazeState())
 setLocalStorageState()
 
-// Fill input with font
+// Update View Values
 $gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
-
-// Fill input with OpenType
 $gazeInputOpenType.val( prettifyCSV(gazeState.openType) )
+$gazeInputZoom.val( gazeState.zoom )
 
+// Apply State
 loadGoogleFonts(parseCsvToArray(gazeState.fonts))
+
+// Print Gaze Elements
 printGlyphGlazers(parseCsvToArray(gazeState.fonts))
+
+// Update Gaze Styles
 updateOpenTypeCss(gazeState.openType)
+updateZoomCss(gazeState.zoom)
