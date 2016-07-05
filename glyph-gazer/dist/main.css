@@ -91,7 +91,7 @@ p {
     opacity: .3;
     padding: 0 2rem; }
   .gaze > * {
-    transition: font-size .15s ease; }
+    transition: font-size .15s ease, opacity .3s ease; }
   .gaze__text {
     outline: none;
     overflow: hidden;
@@ -117,15 +117,13 @@ p {
       vertical-align: baseline;
       width: 100%; }
 
-.hideable {
-  transition: opacity .3s ease; }
-
 .hide-stuff .hideable {
   opacity: 0; }
 
 .tips {
   margin: 6rem 0 2rem;
-  text-align: center; }
+  text-align: center;
+  transition: opacity .3s ease; }
 
 @media print {
   body {
