@@ -3,6 +3,7 @@
 ![Word Mark](https://cdn.rawgit.com/TypeResources/Branding/master/Wordmark/wordmark-200x200.png)
 
 
+
 ## Glyph Gazer
 [Glyph Gazer](https://typeresources.github.io/glyph-gazer/) is a tool to quickly compare glyphs in different fonts. It supports both your local fonts and Google Fonts.
 
