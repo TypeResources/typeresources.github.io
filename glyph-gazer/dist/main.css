@@ -25,7 +25,7 @@ body {
   color: #222;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-weight: 400;
-  padding: calc(5vh + 4rem) 1rem 5vh; }
+  padding: calc(5vh + 4rem) 0 5vh; }
 
 input {
   background-color: transparent;
@@ -37,21 +37,6 @@ input {
 
 svg {
   fill: #222; }
-
-h1,
-h2,
-h3 {
-  font-weight: inherit;
-  margin-top: 1rem; }
-
-h1 {
-  font-size: 4.854rem; }
-
-h2 {
-  font-size: 3.236rem; }
-
-h3 {
-  font-size: 1.618rem; }
 
 a {
   text-decoration: none; }
@@ -107,11 +92,10 @@ p {
     white-space: nowrap; }
   .gaze__metrics {
     height: 100%;
-    left: -1rem;
-    right: -1rem;
     pointer-events: none;
     position: absolute;
     top: 0;
+    width: 100%;
     z-index: -1; }
     .gaze__metrics svg {
       background-color: rgba(243, 243, 241, 0.4);
@@ -126,9 +110,12 @@ p {
       vertical-align: baseline;
       width: 100%; }
 
+.no-chrome .gaze__metrics {
+  display: none; }
+
 .tips {
-  margin: 6rem auto 2rem;
-  max-width: 40rem; }
+  margin: 6rem 0 2rem;
+  text-align: center; }
 
 @media print {
   body {
