@@ -179,6 +179,13 @@ function stateToUri(obj){
 
 // Prettify CSV with space after comma
 function prettifyCSV(csvStr){
+  
+  // Remove spaces after comma
+  csvStr = csvStr.replace(/,   /g, ",")
+  csvStr = csvStr.replace(/,  /g, ",")
+  csvStr = csvStr.replace(/, /g, ",")
+
+  // Add space after comma and return
   return csvStr.replace(/,/g, ", ")
 }
 
