@@ -42,7 +42,14 @@ svg {
 }
 
 a {
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+  color: darken($color-body, 20%);
+  padding: 0.2em 0;
   text-decoration: none;
+  
+  &:hover{
+    border-color: black;
+  }
 }
 
 p{

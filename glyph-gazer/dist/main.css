@@ -39,7 +39,12 @@ svg {
   fill: #222; }
 
 a {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  color: black;
+  padding: 0.2em 0;
   text-decoration: none; }
+  a:hover {
+    border-color: black; }
 
 p {
   color: #555555; }
