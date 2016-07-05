@@ -88,13 +88,15 @@ p {
     font-weight: 400;
     letter-spacing: .02em;
     margin-top: -1rem;
-    opacity: .3; }
+    opacity: .3;
+    padding: 0 2rem; }
   .gaze > * {
     transition: font-size .15s ease; }
   .gaze__text {
     outline: none;
     overflow: hidden;
-    white-space: nowrap; }
+    white-space: nowrap;
+    padding: 0 1.4rem; }
   .gaze__metrics {
     height: 100%;
     pointer-events: none;

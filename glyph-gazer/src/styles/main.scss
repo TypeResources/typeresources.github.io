@@ -46,7 +46,7 @@ a {
   color: darken($color-body, 20%);
   padding: 0.2em 0;
   text-decoration: none;
-  
+
   &:hover{
     border-color: black;
   }
@@ -109,6 +109,7 @@ p{
     letter-spacing: .02em;
     margin-top: -1rem;
     opacity: .3;
+    padding: 0 2rem;
   }
 
   > * {
@@ -119,6 +120,7 @@ p{
     outline: none;
     overflow: hidden;
     white-space: nowrap;
+    padding:0 1.4rem;
   }
 
   &__metrics {
