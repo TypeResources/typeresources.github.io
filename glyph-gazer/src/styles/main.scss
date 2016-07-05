@@ -147,8 +147,13 @@ p{
   }
 }
 
-.no-chrome .gaze__metrics {
-  display: none;
+// toggle UI
+.hideable {
+  transition: opacity .3s ease;
+}
+
+.hide-stuff .hideable {
+  opacity: 0;
 }
 
 .tips {

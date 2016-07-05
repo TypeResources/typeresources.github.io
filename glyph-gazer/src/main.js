@@ -89,7 +89,7 @@ function printGlyphGlazers(arr) {
     // Create elements
     $gazeWrapper = $('<div></div>').addClass('gaze')
     $gazeText = $('<div></div>').addClass('gaze__text')
-    $gazeMetrics = $('<div></div>').addClass('gaze__metrics').html(svg)
+    $gazeMetrics = $('<div></div>').addClass('gaze__metrics hideable').html(svg)
 
     // Add text and make editable
     $gazeText.html(gazeState.text)
@@ -180,6 +180,7 @@ function prettifyCSV(csvStr){
 function resetToDefaults(){
   gazeState = {}
   gazeState = $.extend({}, gazeState, gazeStateDefaults)
+  $('body').removeClass()
 }
 
 function csvValuesToStringValues(str){
@@ -268,10 +269,13 @@ $gazeSettingsButton.on('click', function(){
     $gazeInputOpenType.val( prettifyCSV(gazeState.openType) );
     printGlyphGlazers(parseCsvToArray(gazeState.fonts))
     updateOpenTypeCss(gazeState.openType)
+  } else if ( $this.hasClass('toggle-lines') ) {
+    $('body').toggleClass('hide-stuff')
   }
   setLocalStorageState()
   $('.gaze').css('text-align',gazeState.textAlign)
 })
+
 
 // Zoom based on input
 // TODO save zoomlevel to state and then update css based on state
