@@ -205,8 +205,6 @@ function csvValuesToStringValues(str){
 }
 
 function updateOpenTypeCss(stateVal){
-  gazeState.openType = stateVal
-  setLocalStorageState()
 
   // Generate css compatible OpenType feature list
   // each feature must be exactly 4 chars each
@@ -264,7 +262,13 @@ $gazeInputFonts.keyup(function(e) {
 // Update state on Open Type edit
 $gazeInputOpenType.keyup(function(e) {
   var inputVal = $(this).val()
-  updateOpenTypeCss(inputVal)
+  
+  // Update State
+  gazeState.openType = prettifyCSV(inputVal)
+  setLocalStorageState()
+
+  //Update View
+  updateOpenTypeCss(gazeState.openType)
 })
 
 // Apply Settings
