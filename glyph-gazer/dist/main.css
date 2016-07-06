@@ -79,7 +79,8 @@ p {
 .gaze {
   font-size: 15vw;
   position: relative;
-  text-align: center; }
+  text-align: center;
+  margin-bottom: 1rem; }
   .gaze::after {
     content: attr(data-fontname);
     display: block;
@@ -89,7 +90,9 @@ p {
     letter-spacing: .02em;
     margin-top: -1rem;
     opacity: .3;
-    padding: 0 2rem; }
+    padding: 0 2rem;
+    position: relative;
+    bottom: -1rem; }
   .gaze > * {
     transition: font-size .15s ease, opacity .3s ease; }
   .gaze__text {
