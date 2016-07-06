@@ -75,7 +75,7 @@ function parseCsvToArray(list) {
 }
 
 // Print out divs for all fonts
-function printGlyphGlazers(arr) {
+function updateViewGlyphGazers(arr) {
   $gazeContainer.empty()
   $.each(arr, function(i, font) {
     var trimmedFont = font.trim()
@@ -112,7 +112,7 @@ function printGlyphGlazers(arr) {
     $gazeContainer.append($gazeWrapper)
 
     // Update Gaze Styles
-    updateZoomCss(gazeState.zoom)
+    updateViewZoom(gazeState.zoom)
   })
 }
 
@@ -204,7 +204,7 @@ function csvValuesToStringValues(str){
   return str
 }
 
-function updateOpenTypeCss(stateVal){
+function updateViewOpenType(stateVal){
 
   // Generate css compatible OpenType feature list
   // each feature must be exactly 4 chars each
@@ -227,7 +227,7 @@ function updateOpenTypeCss(stateVal){
   $gazeContainer.attr('style', 'font-feature-settings: ' + otCssString)
 }
 
-function updateZoomCss(multiplier){
+function updateViewZoom(multiplier){
   var percent = multiplier * 100
   var cssVal = percent + '%'
   $('.gaze').children().css('font-size', cssVal)
@@ -256,19 +256,19 @@ $gazeInputFonts.keyup(function(e) {
   gazeState.fonts = $(this).val()
   setLocalStorageState()
   loadGoogleFonts(parseCsvToArray(gazeState.fonts))
-  printGlyphGlazers(parseCsvToArray(gazeState.fonts))
+  updateViewGlyphGazers(parseCsvToArray(gazeState.fonts))
 })
 
 // Update state on Open Type edit
 $gazeInputOpenType.keyup(function(e) {
   var inputVal = $(this).val()
-  
+
   // Update State
   gazeState.openType = prettifyCSV(inputVal)
   setLocalStorageState()
 
   //Update View
-  updateOpenTypeCss(gazeState.openType)
+  updateViewOpenType(gazeState.openType)
 })
 
 // Apply Settings
@@ -294,11 +294,11 @@ $gazeSettingsButton.on('click', function(){
     $gazeInputZoom.val( gazeState.zoom )
 
     // Print Gaze Elements
-    printGlyphGlazers(parseCsvToArray(gazeState.fonts))
+    updateViewGlyphGazers(parseCsvToArray(gazeState.fonts))
 
     // Update Gaze Styles
-    updateOpenTypeCss(gazeState.openType)
-    updateZoomCss(gazeState.openType)
+    updateViewOpenType(gazeState.openType)
+    updateViewZoom(gazeState.openType)
 
   } else if ( $this.hasClass('toggle-lines') ) {
     $('body').toggleClass('hide-stuff')
@@ -319,7 +319,7 @@ $gazeInputZoom.on('change click', function(){
   setLocalStorageState()
 
   // Update DOM
-  updateZoomCss(gazeState.zoom)
+  updateViewZoom(gazeState.zoom)
 })
 
 
@@ -336,17 +336,15 @@ gazeState = $.extend({}, gazeState, getLocalStorageGazeState())
 gazeState = $.extend({}, gazeState, getUrlGazeState())
 setLocalStorageState()
 
-// Update View Values
+// Load fonts
+loadGoogleFonts(parseCsvToArray(gazeState.fonts))
+
+// Update UI Values
 $gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
 $gazeInputOpenType.val( prettifyCSV(gazeState.openType) )
 $gazeInputZoom.val( gazeState.zoom )
 
-// Apply State
-loadGoogleFonts(parseCsvToArray(gazeState.fonts))
-
-// Print Gaze Elements
-printGlyphGlazers(parseCsvToArray(gazeState.fonts))
-
-// Update Gaze Styles
-updateOpenTypeCss(gazeState.openType)
-updateZoomCss(gazeState.zoom)
+// Update canvas
+updateViewGlyphGazers(parseCsvToArray(gazeState.fonts))
+updateViewOpenType(gazeState.openType)
+updateViewZoom(gazeState.zoom)
