@@ -253,9 +253,14 @@ $gazeContainer.keyup(function(e) {
 
 // Update state on font list edit
 $gazeInputFonts.keyup(function(e) {
+  // Update State
   gazeState.fonts = $(this).val()
   setLocalStorageState()
+
+  // Load fonts
   loadGoogleFonts(parseCsvToArray(gazeState.fonts))
+  
+  // Update canvas view
   updateViewGlyphGazers(parseCsvToArray(gazeState.fonts))
 })
 
@@ -267,7 +272,7 @@ $gazeInputOpenType.keyup(function(e) {
   gazeState.openType = prettifyCSV(inputVal)
   setLocalStorageState()
 
-  //Update View
+  //Update canvas view
   updateViewOpenType(gazeState.openType)
 })
 
@@ -288,15 +293,13 @@ $gazeSettingsButton.on('click', function(){
   } else if ( $this.hasClass('reset') ) {
     resetToDefaults();
 
-    // Update View Values
+    // Update UI Values
     $gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
     $gazeInputOpenType.val( prettifyCSV(gazeState.openType) );
     $gazeInputZoom.val( gazeState.zoom )
 
-    // Print Gaze Elements
+    // Update canvas view
     updateViewGlyphGazers(parseCsvToArray(gazeState.fonts))
-
-    // Update Gaze Styles
     updateViewOpenType(gazeState.openType)
     updateViewZoom(gazeState.openType)
 
@@ -318,7 +321,7 @@ $gazeInputZoom.on('change click', function(){
   gazeState.zoom = inputVal
   setLocalStorageState()
 
-  // Update DOM
+  // Update canvas view
   updateViewZoom(gazeState.zoom)
 })
 
@@ -344,7 +347,7 @@ $gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
 $gazeInputOpenType.val( prettifyCSV(gazeState.openType) )
 $gazeInputZoom.val( gazeState.zoom )
 
-// Update canvas
+// Update canvas view
 updateViewGlyphGazers(parseCsvToArray(gazeState.fonts))
 updateViewOpenType(gazeState.openType)
 updateViewZoom(gazeState.zoom)
