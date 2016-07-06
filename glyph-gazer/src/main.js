@@ -272,10 +272,13 @@ $gazeSettingsButton.on('click', function(){
   $this = $(this)
   if ( $this.hasClass('align-left') ) {
     gazeState.textAlign = 'left';
+    $('.gaze').css('text-align',gazeState.textAlign)
   } else if ( $this.hasClass('align-center') ) {
     gazeState.textAlign = 'center';
+    $('.gaze').css('text-align',gazeState.textAlign)
   } else if ( $this.hasClass('align-right') ) {
     gazeState.textAlign = 'right';
+    $('.gaze').css('text-align',gazeState.textAlign)
   } else if ( $this.hasClass('share-url') ) {
     updateUrl()
   } else if ( $this.hasClass('reset') ) {
@@ -296,8 +299,9 @@ $gazeSettingsButton.on('click', function(){
   } else if ( $this.hasClass('toggle-lines') ) {
     $('body').toggleClass('hide-stuff')
   }
+
+  // Save updated state to Local Storage
   setLocalStorageState()
-  $('.gaze').css('text-align',gazeState.textAlign)
 })
 
 
