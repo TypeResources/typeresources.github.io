@@ -8,7 +8,7 @@ var gazeStateDefaults = {
   text: "Adhesion",
   fonts: "Open Sans, Roboto:900, Source Sans Pro:200",
   textAlign: 'center',
-  openType: 'frac',
+  openType: 'kern, calt, liga',
   zoom: '1'
 }
 var localStorageGazeState = localStorage.getItem('gazeState')
@@ -224,6 +224,20 @@ function updateViewOpenType(stateVal){
 
   // Add double quotemark to values
   var otCssString = csvValuesToStringValues(cleanArr.toString())
+
+  // Check for 'kern', 'liga' and 'calt'
+  // If they dont exist, turn them off to counter browser default settings
+  if (otCssString.indexOf('kern') == -1) {
+    otCssString += ', "kern" off'
+  };
+  if (otCssString.indexOf('liga') == -1) {
+    otCssString += ', "liga" off'
+  };
+  if (otCssString.indexOf('calt') == -1) {
+    otCssString += ', "calt" off'
+  };
+
+  // Apply styles
   $gazeContainer.attr('style', 'font-feature-settings: ' + otCssString)
 }
 
