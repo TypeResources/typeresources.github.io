@@ -59,6 +59,15 @@ function updateUrl(){
   window.history.pushState("object or string", "Title", newURL);
 }
 
+function clearUrl(){
+  var fullUrl = window.location.href
+  var baseUrl = getBaseUrl()
+  if (fullUrl != baseUrl) {
+    window.history.pushState("object or string", "Title", baseUrl);
+    console.log("URL cleared")
+  };
+}
+
 function getDomFontList() {
   return $fontsList.val()
 }
@@ -260,6 +269,9 @@ $gazeContainer.keyup(function(e) {
   // Update all text elements except current gaze to avoid cursor jump
   $thisGaze.parent().siblings().children('.gaze__text').html(gazeText)
 
+  // Clean up URL
+  clearUrl()
+
   // Update states
   gazeState.text = gazeText
   setLocalStorageState()
@@ -274,6 +286,9 @@ $gazeInputFonts.keyup(function(e) {
   // Load fonts
   loadGoogleFonts(parseCsvToArray(gazeState.fonts))
   
+  // Clean up URL
+  clearUrl()
+
   // Update canvas view
   updateViewGlyphGazers(parseCsvToArray(gazeState.fonts))
 })
@@ -286,6 +301,9 @@ $gazeInputOpenType.keyup(function(e) {
   gazeState.openType = prettifyCSV(inputVal)
   setLocalStorageState()
 
+  // Clean up URL
+  clearUrl()
+
   //Update canvas view
   updateViewOpenType(gazeState.openType)
 })
@@ -293,6 +311,7 @@ $gazeInputOpenType.keyup(function(e) {
 // Apply Settings
 $gazeSettingsButton.on('click', function(){
   $this = $(this)
+  var preventClearUrl = false
   if ( $this.hasClass('align-left') ) {
     gazeState.textAlign = 'left';
     $('.gaze').css('text-align',gazeState.textAlign)
@@ -303,6 +322,7 @@ $gazeSettingsButton.on('click', function(){
     gazeState.textAlign = 'right';
     $('.gaze').css('text-align',gazeState.textAlign)
   } else if ( $this.hasClass('share-url') ) {
+    preventClearUrl = true
     updateUrl()
   } else if ( $this.hasClass('reset') ) {
     resetToDefaults();
@@ -321,6 +341,11 @@ $gazeSettingsButton.on('click', function(){
     $('body').toggleClass('hide-stuff')
   }
 
+  // Clean up URL, only if share url is not clicked
+  if (!preventClearUrl) {
+    clearUrl()
+  };
+
   // Save updated state to Local Storage
   setLocalStorageState()
 })
@@ -334,6 +359,9 @@ $gazeInputZoom.on('change click', function(){
   // Update State
   gazeState.zoom = inputVal
   setLocalStorageState()
+
+  // Clean up URL
+  clearUrl()
 
   // Update canvas view
   updateViewZoom(gazeState.zoom)
