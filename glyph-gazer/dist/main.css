@@ -1,3 +1,5 @@
+@import url("../fonts/empty-Regular.woff");
+@import url("../fonts/empty-Regular.woff2");
 button {
   background: none;
   border: 0;
@@ -80,7 +82,8 @@ p {
   font-size: 15vw;
   position: relative;
   text-align: center;
-  margin-bottom: 1rem; }
+  margin-bottom: 1rem;
+  font-family: "WOFF empty-Regular"; }
   .gaze::after {
     content: attr(data-fontname);
     display: block;
