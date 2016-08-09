@@ -24,6 +24,7 @@ var $gazeSettingsButton = $('#gaze-settings button')
 // Other
 var googleFontsUrl = "https://fonts.googleapis.com/css?family="
 var svg = '<svg><use xlink:href="#lines"/></svg>'
+var placeholderFontName = "WOFF empty-Regular"
 
 
 ///////////////////
@@ -108,7 +109,7 @@ function updateViewGlyphGazers(arr) {
 
     // Add font styles
     $gazeWrapper.css({
-      'font-family': fontName,
+      'font-family': fontName+','+placeholderFontName,
       'font-weight': fontWeight,
       'text-align': gazeState.textAlign
     })
