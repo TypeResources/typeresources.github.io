@@ -13,35 +13,46 @@
 </head>
 
 <body>
-  <div class="gaze-header">
-    <input id="gaze-fonts" class="gaze-header__fonts" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Add fonts to the list e.g. Roboto, Open Sans:900 ...">
-    <input id="gaze-opentype" class="gaze-header__opentype" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Add OpenType features...">
-    <input id="gaze-zoom" class="gaze-header__zoom" type="number" value="1" step="0.4" min="0.2" max="15">
-    <div id="gaze-settings" class="gaze-header__settings">
-      <button class="share-url"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_link"/></svg></button>
-      <button class="toggle-lines"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_lines"/></svg></button>
-      <button class="align-left"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_align-left"/></svg></button>
-      <button class="align-center"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_align-center"/></svg></button>
-      <button class="align-right"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_align-right"/></svg></button>
-      <button class="reset"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_refresh"/></svg></button>
+  <div id="app">
+    <div class="gaze-header">
+      <input id="gaze-fonts" v-model="gazeState.fonts" class="gaze-header__fonts" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Add fonts to the list e.g. Roboto, Open Sans:900 ...">
+      <input id="gaze-opentype" v-model="gazeState.openType" class="gaze-header__opentype" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Add OpenType features...">
+      <input id="gaze-zoom" v-model="gazeState.zoom" class="gaze-header__zoom" type="number" step="0.4" min="0.2" max="15">
+      <div id="gaze-settings" class="gaze-header__settings">
+        <button class="share-url" v-on:click="setUrlGazeState"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_link"/></svg></button>
+        <button class="toggle-lines"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_lines"/></svg></button>
+        <button class="align-left"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_align-left"/></svg></button>
+        <button class="align-center"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_align-center"/></svg></button>
+        <button class="align-right"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_align-right"/></svg></button>
+        <button class="reset"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_refresh"/></svg></button>
+      </div>
+    </div>
+    
+    <div id="font-loading"></div>
+    <div  id="gaze-container" style="font-feature-settings: {{ openTypeCssValue }}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <div class="gaze" v-for="font in fontArray" style="font-family: {{font.name}}; font-weight: {{font.weight}};">
+        <div class="gaze__text" contenteditable="true" v-on:input="updateText" v-model="gazeState.text" style="font-size: {{ zoomPercent }};">{{gazeState.text}}</div>
+        <div class="gaze__metrics hideable" style="font-size: 100%;">
+          <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#lines"></use></svg>
+        </div>
+      </div>
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+      <symbol viewBox="0 0 1 4" id="lines" preserveAspectRatio="none">
+        <path d="M0 1h1M0 2h1M0 3h1" vector-effect="non-scaling-stroke"/>
+      </symbol>
+    </svg>
+
+    <div class="tips hideable">
+      <p>
+        Tips + instructions in the <a href="https://github.com/TypeResources/typeresources.github.io#glyph-gazer">TypeResources readme</a>
+      </p>
     </div>
   </div>
 
-  <div id="font-loading"></div>
-  <div id="gaze-container" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
-
-  <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
-    <symbol viewBox="0 0 1 4" id="lines" preserveAspectRatio="none">
-      <path d="M0 1h1M0 2h1M0 3h1" vector-effect="non-scaling-stroke"/>
-    </symbol>
-  </svg>
-
-  <div class="tips hideable">
-    <p>
-      Tips + instructions in the <a href="https://github.com/TypeResources/typeresources.github.io#glyph-gazer">TypeResources readme</a>
-    </p>
-  </div>
   <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/svg4everybody/2.1.0/svg4everybody.js"></script>
   <script src="dist/main.js"></script>
