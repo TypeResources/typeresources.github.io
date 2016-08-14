@@ -136,7 +136,18 @@ var gg = new Vue({
     },
     setUrlGazeState: function(){
       var newURL = getBaseUrl() + stateToUri(this.gazeState)
-      window.history.pushState("object or string", "Title", newURL);
+      window.history.pushState("object or string", "Title", newURL)
+    },
+    clearUrl: function() {
+      var fullUrl = window.location.href
+      var baseUrl = getBaseUrl()
+      if (fullUrl != baseUrl) {
+        window.history.pushState("object or string", "Title", baseUrl)
+        console.log("URL cleared")
+      };
+    },
+    resetToDefaults: function(){
+      this.gazeState = $.extend({}, {}, gazeStateDefaults)
     }
   },
 
@@ -147,7 +158,7 @@ var gg = new Vue({
     'gazeState': {
       handler: function (val, oldVal) {
         this.saveGazeState()
-        console.log('new: %s, old: %s', val, oldVal)
+        this.clearUrl()
       },
       deep: true
     }
