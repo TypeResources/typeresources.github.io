@@ -30,8 +30,8 @@
     
     <div id="font-loading"></div>
     <div  id="gaze-container" style="font-feature-settings: {{ openTypeCssValue }};" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-      <div class="gaze" v-for="font in fontArray" style="font-family: {{font.name}}; font-weight: {{font.weight}}; text-align: {{gazeState.textAlign}}">
-        <div class="gaze__text" contenteditable="true" v-on:input="updateText" v-model="gazeState.text" v-text="gazeState.text" style="font-size: {{ zoomPercent }};"></div>
+      <div class="gaze" v-for="font in fontArray" style="font-family: {{font.name}}; font-weight: {{font.weight}}; text-align: {{gazeState.textAlign}}; font-size: {{ zoomPercent }};">
+        <div class="gaze__text" contenteditable="true" v-on:input="updateText" v-model="gazeState.text" v-text="gazeState.text"></div>
         <div class="gaze__metrics hideable" style="font-size: 100%;">
           <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#lines"></use></svg>
         </div>
