@@ -82,7 +82,7 @@ var gg = new Vue({
           fontName = trimmedFont
         }
         fontArr.push({
-          name: '"' + fontName + '"',
+          name: fontName,
           weight: fontWeight
         })
       })
