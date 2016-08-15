@@ -12,6 +12,10 @@ var gazeStateDefaults = {
   zoom: '1'
 }
 
+var googleFontsUrl = "https://fonts.googleapis.com/css?family="
+var svg = '<svg><use xlink:href="#lines"/></svg>'
+var placeholderFontName = "WOFF empty-Regular"
+
 
 //////////////////////
 //// Preparations ////
@@ -25,8 +29,8 @@ initialGazeState = $.extend({}, initialGazeState, gazeStateDefaults)
 initialGazeState = $.extend({}, initialGazeState, getLocalStorageGazeState())
 initialGazeState = $.extend({}, initialGazeState, getUrlGazeState())
 
-// Load fonts
-// loadGoogleFonts(parseCsvToArray(gazeState.fonts))
+// Initial font loading
+loadGoogleFonts( parseCsvToArray(initialGazeState.fonts) )
 
 
 
@@ -43,7 +47,10 @@ var gg = new Vue({
   //// Data ////
   //////////////
   data: {
-    gazeState: initialGazeState
+    gazeState: initialGazeState,
+    fixedState: {
+      showGuides: true
+    }
   },
 
   /////////////////////////
@@ -164,6 +171,9 @@ var gg = new Vue({
         this.clearUrl()
       },
       deep: true
+    },
+    'gazeState.fonts': function(){
+      loadGoogleFonts( parseCsvToArray(this.gazeState.fonts) )
     }
   }
 })
@@ -251,4 +261,35 @@ function stateToUri(state){
   uriStr = uriStr.slice(0, -1)
 
   return uriStr
+}
+
+
+function getGoogleFontsURI(arr) {
+
+  var familyParam = ""
+
+  // Loop though fonts and add to familyParam string
+  $.each(arr, function(i, font) {
+    familyParam += font.trim()
+    familyParam += '|'
+  })
+
+  // Remove last bar
+  familyParam = familyParam.slice(0, -1)
+
+  // Replace Spaces with plus.
+  familyParam = familyParam.split(' ').join('+')
+  return googleFontsUrl + familyParam
+}
+
+function parseCsvToArray(list) {
+  var parsed = Papa.parse(list).data[0]
+  return parsed
+}
+
+
+// Load google fonts
+function loadGoogleFonts(arr) {
+  $('#font-loading').html('<style>@import \'' + getGoogleFontsURI(arr) +
+    '\';</style>')
 }
