@@ -80,8 +80,10 @@ p {
     padding-right: 0;
     width: 4rem; }
 
+.gaze-container {
+  font-size: 15vw; }
+
 .gaze {
-  font-size: 15vw;
   position: relative;
   text-align: center;
   margin-bottom: 1rem; }
