@@ -48,7 +48,7 @@ var gg = new Vue({
   //////////////
   data: {
     gazeState: initialGazeState,
-    fixedState: {
+    sessionState: {
       showGuides: true
     }
   },
@@ -158,6 +158,10 @@ var gg = new Vue({
     },
     setAlign: function(string){
       this.gazeState.textAlign = string
+    },
+    toggleGuides: function(){
+      this.sessionState.showGuides = !this.sessionState.showGuides
+      console.log(this.sessionState.showGuides)
     }
   },
 

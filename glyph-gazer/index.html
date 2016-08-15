@@ -19,12 +19,12 @@
       <input id="gaze-opentype" v-model="gazeState.openType" class="gaze-header__opentype" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Add OpenType features...">
       <input id="gaze-zoom" v-model="gazeState.zoom" class="gaze-header__zoom" type="number" step="0.4" min="0.2" max="15">
       <div id="gaze-settings" class="gaze-header__settings">
-        <button class="share-url" v-on:click="setUrlGazeState"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_link"/></svg></button>
-        <button class="toggle-lines"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_lines"/></svg></button>
-        <button class="align-left"   v-bind:class="{ 'active': gazeState.textAlign=='left' }"   v-on:click="setAlign('left')"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_align-left"/></svg></button>
-        <button class="align-center" v-bind:class="{ 'active': gazeState.textAlign=='center' }" v-on:click="setAlign('center')"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_align-center"/></svg></button>
-        <button class="align-right"  v-bind:class="{ 'active': gazeState.textAlign=='right' }"  v-on:click="setAlign('right')"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_align-right"/></svg></button>
-        <button class="reset" v-on:click="resetToDefaults"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_refresh"/></svg></button>
+        <button class="share-url"    v-on:click="setUrlGazeState"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_link"/></svg></button>
+        <button class="toggle-lines" v-on:click="toggleGuides"        v-bind:class="{ 'active': sessionState.showGuides }"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_lines"/></svg></button>
+        <button class="align-left"   v-on:click="setAlign('left')"    v-bind:class="{ 'active': gazeState.textAlign=='left' }"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_align-left"/></svg></button>
+        <button class="align-center" v-on:click="setAlign('center')"  v-bind:class="{ 'active': gazeState.textAlign=='center' }"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_align-center"/></svg></button>
+        <button class="align-right"  v-on:click="setAlign('right')"   v-bind:class="{ 'active': gazeState.textAlign=='right' }"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_align-right"/></svg></button>
+        <button class="reset"        v-on:click="resetToDefaults"><svg class="icon"><use xlink:href="dist/icons.svg#sprite_refresh"/></svg></button>
       </div>
     </div>
     
@@ -32,7 +32,7 @@
     <div class="gaze-container" style="font-feature-settings: {{ openTypeCssValue }};" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
       <div class="gaze" data-fontname="{{font.name}}" v-for="font in fontArray" style="font-family: '{{font.name}}'; font-weight: {{font.weight}}; text-align: {{gazeState.textAlign}}; font-size: {{ zoomPercent }};">
         <div class="gaze__text" contenteditable="true" v-on:input="updateText" v-model="gazeState.text" v-text="gazeState.text"></div>
-        <div class="gaze__metrics hideable" style="font-size: 100%;">
+        <div class="gaze__metrics" v-bind:class="{ 'hide' : !sessionState.showGuides }" style="font-size: 100%;">
           <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#lines"></use></svg>
         </div>
       </div>
@@ -44,7 +44,7 @@
       </symbol>
     </svg>
 
-    <div class="tips hideable">
+    <div class="tips" v-bind:class="{ 'hide' : !sessionState.showGuides }">
       <p>
         Tips + instructions in the <a href="https://github.com/TypeResources/typeresources.github.io#glyph-gazer">TypeResources readme</a>
       </p>

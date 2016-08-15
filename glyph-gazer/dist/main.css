@@ -126,7 +126,7 @@ p {
       vertical-align: baseline;
       width: 100%; }
 
-.hide-stuff .hideable {
+.hide {
   opacity: 0; }
 
 .tips {
