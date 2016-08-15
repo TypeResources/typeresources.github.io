@@ -9,8 +9,8 @@ button {
   padding: .5rem;
   user-select: none;
 
-  &:focus,
-  &:hover {
+  &:hover,
+  &.active {
     background-color: rgba(white, .5);
   }
 

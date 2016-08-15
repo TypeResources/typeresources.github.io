@@ -8,7 +8,7 @@ button {
   overflow: visible;
   padding: .5rem;
   user-select: none; }
-  button:focus, button:hover {
+  button:hover, button.active {
     background-color: rgba(255, 255, 255, 0.5); }
   button:focus {
     outline: 0; }

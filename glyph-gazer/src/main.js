@@ -5,11 +5,11 @@
 var initialGazeState
 var localStorageGazeState = getLocalStorageGazeState()
 var gazeStateDefaults = {
-  text: 'fi',
-  fonts: 'Lato:800',
-  openType: 'calt, kern, liga',
+  text: "Adhesion",
+  fonts: "Open Sans, Roboto:900, Source Sans Pro:200",
   textAlign: 'center',
-  zoom: 1
+  openType: 'kern, calt, liga',
+  zoom: '1'
 }
 
 
@@ -148,6 +148,9 @@ var gg = new Vue({
     },
     resetToDefaults: function(){
       this.gazeState = $.extend({}, {}, gazeStateDefaults)
+    },
+    setAlign: function(string){
+      this.gazeState.textAlign = string
     }
   },
 
