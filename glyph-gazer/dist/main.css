@@ -8,7 +8,7 @@ button {
   overflow: visible;
   padding: .5rem;
   user-select: none; }
-  button:focus, button:hover {
+  button:hover, button.active {
     background-color: rgba(255, 255, 255, 0.5); }
   button:focus {
     outline: 0; }
@@ -80,8 +80,10 @@ p {
     padding-right: 0;
     width: 4rem; }
 
+.gaze-container {
+  font-size: 15vw; }
+
 .gaze {
-  font-size: 15vw;
   position: relative;
   text-align: center;
   margin-bottom: 1rem; }
@@ -124,7 +126,7 @@ p {
       vertical-align: baseline;
       width: 100%; }
 
-.hide-stuff .hideable {
+.hide {
   opacity: 0; }
 
 .tips {

@@ -2,8 +2,8 @@
 //// VARIABLES ////
 ///////////////////
 
-// State
-var gazeState = {}
+var initialGazeState
+var localStorageGazeState = getLocalStorageGazeState()
 var gazeStateDefaults = {
   text: "Adhesion",
   fonts: "Open Sans, Roboto:900, Source Sans Pro:200",
@@ -11,25 +11,208 @@ var gazeStateDefaults = {
   openType: 'kern, calt, liga',
   zoom: '1'
 }
-var localStorageGazeState = localStorage.getItem('gazeState')
 
-// DOM Elements
-var $gazeContainer = $('#gaze-container')
-var $gazeInputFonts = $('#gaze-fonts')
-var $gazeInputOpenType = $('#gaze-opentype')
-var $gazeInputZoom = $('#gaze-zoom')
-var $fontsList = $('#fonts-list')
-var $gazeSettingsButton = $('#gaze-settings button')
-
-// Other
 var googleFontsUrl = "https://fonts.googleapis.com/css?family="
 var svg = '<svg><use xlink:href="#lines"/></svg>'
 var placeholderFontName = "WOFF empty-Regular"
 
 
-///////////////////
+//////////////////////
+//// Preparations ////
+//////////////////////
+
+// Loads svg4everybody polyfill in old browsers
+svg4everybody()
+
+// Extends default gazeState with any url parameters
+initialGazeState = $.extend({}, initialGazeState, gazeStateDefaults)
+initialGazeState = $.extend({}, initialGazeState, getLocalStorageGazeState())
+initialGazeState = $.extend({}, initialGazeState, getUrlGazeState())
+
+// Initial font loading
+loadGoogleFonts( parseCsvToArray(initialGazeState.fonts) )
+
+
+
+
+////////////////////
+//// Vue.js App ////
+////////////////////
+
+
+var gg = new Vue({
+  el: '#app',
+
+  //////////////
+  //// Data ////
+  //////////////
+  data: {
+    gazeState: initialGazeState,
+    sessionState: {
+      showGuides: true
+    }
+  },
+
+  /////////////////////////
+  //// Computed values ////
+  /////////////////////////
+  computed: {
+    zoomPercent: function(){
+      return (this.gazeState.zoom * 100) + "%"
+    },
+    fontArray: function(){
+      var csvStr = this.gazeState.fonts
+      var arr
+      var fontArr = []
+      
+      // Split into array
+      arr = csvStr.split(",")
+      if (arr.lastIndexOf("") != -1) {
+          arr.pop()
+      }
+      // Separate font name from weight
+      arr.forEach(function(font){
+        var trimmedFont = font.trim()
+        var fontName = ''
+        var fontWeight = 400
+        if (trimmedFont.includes(":")) {
+          fontName = trimmedFont.split(':')[0]
+          fontWeight = trimmedFont.split(':')[1]
+        } else {
+          fontName = trimmedFont
+        }
+        fontArr.push({
+          name: fontName,
+          weight: fontWeight
+        })
+      })
+      return fontArr
+    },
+    openTypeCssValue: function(){
+
+      // Generate css compatible OpenType feature list
+      // each feature must be exactly 4 chars each
+      var otFeats = this.gazeState.openType
+      var otCssString
+
+      // Remove whitespace
+      otFeats = otFeats.replace(/ /g, "");
+
+      // Remove all non-4-char values
+      var dirtyArr = otFeats.split(",")
+      var cleanArr = []
+      for (var i = 0; i < dirtyArr.length; i++) {
+        if (dirtyArr[i].length == 4) {
+          cleanArr.push(dirtyArr[i])
+        };
+      };
+
+      // Add double quotemark to values
+      otCssString = csvValuesToStringValues(cleanArr.toString())
+
+      // Check for 'kern', 'liga' and 'calt'
+      // If they dont exist, turn them off to counter browser default settings
+      if (otCssString.indexOf('kern') == -1) {
+        otCssString += ',"kern" off'
+      };
+      if (otCssString.indexOf('liga') == -1) {
+        otCssString += ',"liga" off'
+      };
+      if (otCssString.indexOf('calt') == -1) {
+        otCssString += ',"calt" off'
+      };
+
+      // Remove inital comma when original string is empty
+      while(otCssString.charAt(0) === ',')
+          otCssString = otCssString.substr(1);
+
+      return otCssString
+    }
+  },
+
+  /////////////////
+  //// Methods ////
+  /////////////////
+  methods: {
+    updateText: function(e){
+      var newText = e.target.innerText
+      this.gazeState.text = newText
+    },
+    saveGazeState: function(){
+      localStorage.setItem('gazeState', JSON.stringify(this.gazeState))
+    },
+    setUrlGazeState: function(){
+      var newURL = getBaseUrl() + stateToUri(this.gazeState)
+      window.history.pushState("object or string", "Title", newURL)
+    },
+    clearUrl: function() {
+      var fullUrl = window.location.href
+      var baseUrl = getBaseUrl()
+      if (fullUrl != baseUrl) {
+        window.history.pushState("object or string", "Title", baseUrl)
+        console.log("URL cleared")
+      };
+    },
+    resetToDefaults: function(){
+      this.gazeState = $.extend({}, {}, gazeStateDefaults)
+    },
+    setAlign: function(string){
+      this.gazeState.textAlign = string
+    },
+    toggleGuides: function(){
+      this.sessionState.showGuides = !this.sessionState.showGuides
+      console.log(this.sessionState.showGuides)
+    }
+  },
+
+  //////////////////
+  //// Watchers ////
+  //////////////////
+  watch: {
+    'gazeState': {
+      handler: function (val, oldVal) {
+        this.saveGazeState()
+        this.clearUrl()
+      },
+      deep: true
+    },
+    'gazeState.fonts': function(){
+      loadGoogleFonts( parseCsvToArray(this.gazeState.fonts) )
+    }
+  }
+})
+
+
+
+
+
+
+
+////////////////////
 //// FUNCTIONS ////
-///////////////////
+////////////////////
+
+function csvValuesToStringValues(str){
+  if (str != "") {
+    //remove spaces
+    str = str.replace(/ /g, "")
+    //add quotes
+    str = '"' + str
+    str = str.replace(/,/g, '", "')
+    str = str + '"'
+    return str
+  }else{
+    return ""
+  }
+}
+
+function getLocalStorageGazeState() {
+  return JSON.parse(localStorage.getItem('gazeState'))
+}
+
+function setLocalStorageState() {
+  localStorage.setItem('gazeState', JSON.stringify(gazeState))
+}
 
 function getUrlGazeState() {
   var match
@@ -47,117 +230,14 @@ function getUrlGazeState() {
   return urlParams
 }
 
-function getLocalStorageGazeState() {
-  return JSON.parse(localStorage.getItem('gazeState'))
-}
-
-function setLocalStorageState() {
-  localStorage.setItem('gazeState', JSON.stringify(gazeState))
-}
-
-function updateUrl(){
-  var newURL = getBaseUrl() + stateToUri()
-  window.history.pushState("object or string", "Title", newURL);
-}
-
-function clearUrl(){
-  var fullUrl = window.location.href
-  var baseUrl = getBaseUrl()
-  if (fullUrl != baseUrl) {
-    window.history.pushState("object or string", "Title", baseUrl);
-    console.log("URL cleared")
-  };
-}
-
-function getDomFontList() {
-  return $fontsList.val()
-}
-
-function parseCsvToArray(list) {
-  var parsed = Papa.parse(list).data[0]
-
-  // Check for and remove trailing commas
-  if (parsed.lastIndexOf("") != -1) {
-    parsed.pop()
-  }
-
-  return parsed
-}
-
-// Print out divs for all fonts
-function updateViewGlyphGazers(arr) {
-  $gazeContainer.empty()
-  $.each(arr, function(i, font) {
-    var trimmedFont = font.trim()
-    var fontName = ''
-    var fontWeight = 400
-    if (trimmedFont.includes(":")) {
-      fontName = trimmedFont.split(':')[0]
-      fontWeight = trimmedFont.split(':')[1]
-    } else {
-      fontName = trimmedFont
-    }
-
-    // Create elements
-    $gazeWrapper = $('<div></div>').addClass('gaze')
-    $gazeText = $('<div></div>').addClass('gaze__text')
-    $gazeMetrics = $('<div></div>').addClass('gaze__metrics hideable').html(svg)
-
-    // Add text and make editable
-    $gazeText.html(gazeState.text)
-    $gazeText.attr('contenteditable', 'true');
-
-    // Add font styles
-    $gazeWrapper.css({
-      'font-family': fontName+','+placeholderFontName,
-      'font-weight': fontWeight,
-      'text-align': gazeState.textAlign
-    })
-
-    // Add font name to data attribute for css display
-    $gazeWrapper.attr('data-fontname', fontName)
-
-    // Append to DOM
-    $gazeWrapper.append($gazeText, $gazeMetrics)
-    $gazeContainer.append($gazeWrapper)
-
-    // Update Gaze Styles
-    updateViewZoom(gazeState.zoom)
-  })
-}
-
-// Get Google Fonts URI compatible string from array of font objects
-function getGoogleFontsURI(arr) {
-
-  var familyParam = ""
-
-  // Loop though fonts and add to familyParam string
-  $.each(arr, function(i, font) {
-    familyParam += font.trim()
-    familyParam += '|'
-  })
-
-  // Remove last bar
-  familyParam = familyParam.slice(0, -1)
-
-  // Replace Spaces with plus.
-  familyParam = familyParam.split(' ').join('+')
-  return googleFontsUrl + familyParam
-}
-
-// Load google fonts
-function loadGoogleFonts(arr) {
-  $('#font-loading').html('<style>@import \'' + getGoogleFontsURI(arr) +
-    '\';</style>')
-}
-
 // Get base url. Removes parameters.
 function getBaseUrl(){
     return window.location.href.replace(/\?.*/,'');
 }
 
+
 // Convert object to URI string
-function stateToUri(obj){
+function stateToUri(state){
   // Set values to sync to URI
   var valuesToSync = ['text', 'fonts', 'openType', 'textAlign', 'zoom']
 
@@ -166,7 +246,7 @@ function stateToUri(obj){
 
   for (var i = 0; i < valuesToSync.length; i++) {
     var key = valuesToSync[i]
-    var value = gazeState[key]
+    var value = state[key]
 
     // Remove whitespaces
     value = value.replace(/, /g, ",")
@@ -187,210 +267,33 @@ function stateToUri(obj){
   return uriStr
 }
 
-// Prettify CSV with space after comma
-function prettifyCSV(csvStr){
 
-  // Remove unecessary spaces after comma
-  csvStr = csvStr.replace(/,   /g, ",")
-  csvStr = csvStr.replace(/,  /g, ",")
-  csvStr = csvStr.replace(/, /g, ",")
+function getGoogleFontsURI(arr) {
 
-  // Add space after comma and return
-  return csvStr.replace(/,/g, ", ")
+  var familyParam = ""
+
+  // Loop though fonts and add to familyParam string
+  $.each(arr, function(i, font) {
+    familyParam += font.trim()
+    familyParam += '|'
+  })
+
+  // Remove last bar
+  familyParam = familyParam.slice(0, -1)
+
+  // Replace Spaces with plus.
+  familyParam = familyParam.split(' ').join('+')
+  return googleFontsUrl + familyParam
 }
 
-function resetToDefaults(){
-  gazeState = $.extend({}, {}, gazeStateDefaults)
-  $('body').removeClass()
-}
-
-function csvValuesToStringValues(str){
-  //remove spaces
-  str = str.replace(/ /g, "")
-  //add quotes
-  str = '"' + str
-  str = str.replace(/,/g, '", "')
-  str = str + '"'
-  return str
-}
-
-function updateViewOpenType(stateVal){
-
-  // Generate css compatible OpenType feature list
-  // each feature must be exactly 4 chars each
-  var otFeats = gazeState.openType
-
-  // Remove whitespace
-  otFeats = otFeats.replace(/ /g, "");
-
-  // Remove all non-4-char values
-  var dirtyArr = otFeats.split(",")
-  var cleanArr = []
-  for (var i = 0; i < dirtyArr.length; i++) {
-    if (dirtyArr[i].length == 4) {
-      cleanArr.push(dirtyArr[i])
-    };
-  };
-
-  // Add double quotemark to values
-  var otCssString = csvValuesToStringValues(cleanArr.toString())
-
-  // Check for 'kern', 'liga' and 'calt'
-  // If they dont exist, turn them off to counter browser default settings
-  if (otCssString.indexOf('kern') == -1) {
-    otCssString += ', "kern" off'
-  };
-  if (otCssString.indexOf('liga') == -1) {
-    otCssString += ', "liga" off'
-  };
-  if (otCssString.indexOf('calt') == -1) {
-    otCssString += ', "calt" off'
-  };
-
-  // Apply styles
-  $gazeContainer.attr('style', 'font-feature-settings: ' + otCssString)
-}
-
-function updateViewZoom(multiplier){
-  var percent = multiplier * 100
-  var cssVal = percent + '%'
-  $('.gaze').children().css('font-size', cssVal)
+function parseCsvToArray(list) {
+  var parsed = Papa.parse(list).data[0]
+  return parsed
 }
 
 
-//////////////////////////
-//// USER INTERACTION ////
-//////////////////////////
-
-// Update state on gaze text edit
-$gazeContainer.keyup(function(e) {
-  var $thisGaze = $(e.target)
-  var gazeText = $thisGaze.text()
-
-  // Update all text elements except current gaze to avoid cursor jump
-  $thisGaze.parent().siblings().children('.gaze__text').html(gazeText)
-
-  // Clean up URL
-  clearUrl()
-
-  // Update states
-  gazeState.text = gazeText
-  setLocalStorageState()
-})
-
-// Update state on font list edit
-$gazeInputFonts.keyup(function(e) {
-  // Update State
-  gazeState.fonts = $(this).val()
-  setLocalStorageState()
-
-  // Load fonts
-  loadGoogleFonts(parseCsvToArray(gazeState.fonts))
-  
-  // Clean up URL
-  clearUrl()
-
-  // Update canvas view
-  updateViewGlyphGazers(parseCsvToArray(gazeState.fonts))
-})
-
-// Update state on Open Type edit
-$gazeInputOpenType.keyup(function(e) {
-  var inputVal = $(this).val()
-
-  // Update State
-  gazeState.openType = prettifyCSV(inputVal)
-  setLocalStorageState()
-
-  // Clean up URL
-  clearUrl()
-
-  //Update canvas view
-  updateViewOpenType(gazeState.openType)
-})
-
-// Apply Settings
-$gazeSettingsButton.on('click', function(){
-  $this = $(this)
-  var preventClearUrl = false
-  if ( $this.hasClass('align-left') ) {
-    gazeState.textAlign = 'left';
-    $('.gaze').css('text-align',gazeState.textAlign)
-  } else if ( $this.hasClass('align-center') ) {
-    gazeState.textAlign = 'center';
-    $('.gaze').css('text-align',gazeState.textAlign)
-  } else if ( $this.hasClass('align-right') ) {
-    gazeState.textAlign = 'right';
-    $('.gaze').css('text-align',gazeState.textAlign)
-  } else if ( $this.hasClass('share-url') ) {
-    preventClearUrl = true
-    updateUrl()
-  } else if ( $this.hasClass('reset') ) {
-    resetToDefaults();
-
-    // Update UI Values
-    $gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
-    $gazeInputOpenType.val( prettifyCSV(gazeState.openType) );
-    $gazeInputZoom.val( gazeState.zoom )
-
-    // Update canvas view
-    updateViewGlyphGazers(parseCsvToArray(gazeState.fonts))
-    updateViewOpenType(gazeState.openType)
-    updateViewZoom(gazeState.openType)
-
-  } else if ( $this.hasClass('toggle-lines') ) {
-    $('body').toggleClass('hide-stuff')
-  }
-
-  // Clean up URL, only if share url is not clicked
-  if (!preventClearUrl) {
-    clearUrl()
-  };
-
-  // Save updated state to Local Storage
-  setLocalStorageState()
-})
-
-
-// Zoom based on input
-// TODO save zoomlevel to state and then update css based on state
-$gazeInputZoom.on('change click', function(){
-  var inputVal = $(this).val()
-
-  // Update State
-  gazeState.zoom = inputVal
-  setLocalStorageState()
-
-  // Clean up URL
-  clearUrl()
-
-  // Update canvas view
-  updateViewZoom(gazeState.zoom)
-})
-
-
-//////////////
-//// INIT ////
-//////////////
-
-// Loads svg4everybody polyfill in old browsers
-svg4everybody()
-
-// Extends default gazeState with any url parameters
-gazeState = $.extend({}, gazeState, gazeStateDefaults)
-gazeState = $.extend({}, gazeState, getLocalStorageGazeState())
-gazeState = $.extend({}, gazeState, getUrlGazeState())
-setLocalStorageState()
-
-// Load fonts
-loadGoogleFonts(parseCsvToArray(gazeState.fonts))
-
-// Update UI Values
-$gazeInputFonts.val( prettifyCSV(gazeState.fonts) )
-$gazeInputOpenType.val( prettifyCSV(gazeState.openType) )
-$gazeInputZoom.val( gazeState.zoom )
-
-// Update canvas view
-updateViewGlyphGazers(parseCsvToArray(gazeState.fonts))
-updateViewOpenType(gazeState.openType)
-updateViewZoom(gazeState.zoom)
+// Load google fonts
+function loadGoogleFonts(arr) {
+  $('#font-loading').html('<style>@import \'' + getGoogleFontsURI(arr) +
+    '\';</style>')
+}
